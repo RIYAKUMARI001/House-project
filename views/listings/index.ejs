@@ -1,15 +1,25 @@
 <% layout("layouts/boilerplate") %>
+
 <body>
-   <h2>All Listings</h2> 
-   <form method="GET" action="/listings/new">
-    <button>Ceate New Listing</button>
-   </form>
-   <ul>
-    <% listings.forEach(listing => { %>
-        <li><a href="/listings/<%= listing._id %>"><%= listing.title %></a> </li>
-        
-    <% }) %>
-   </ul>
+  <div class="container mt-4">
+    <h2 class="mb-4">All Listings</h2>
+    <div class="row g-3">
+      <% for(let listing of listings) { %>
+        <div class="col-sm-6 col-md-4 col-lg-3">
+          <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
+            <div class="card" style="width: 100%; max-height: 350px; overflow: hidden;">
+              <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image" style="height: 220px; object-fit: cover;">
+              <div class="card-img-overlay"></div>
+              <div class="card-body p-2">
+                <h6 class="card-title mb-1" style="font-size: 1rem;"><%= listing.title %></h6>
+                <p class="card-text mb-2" style="font-size: 0.9rem;">
+                  <%= listing.price ? `₹${listing.price.toLocaleString("en-IN")}` : "Price not available" %> / night
+                </p>
+              </div>
+            </div>
+          </a>
+        </div>
+      <% } %>
+    </div>
+  </div>
 </body>
-
-
