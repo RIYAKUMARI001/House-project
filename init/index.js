@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
-const Listing = require("../models/listing.js");
-const sampleListings = require("./data.js");
+const Listing = require("../models/listing");
+const User = require("../models/user");
+const sampleListings = require("./data");
+const sampleUsers = require("./users");
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/test";
 
@@ -18,13 +20,39 @@ async function main() {
 // Function to initialize DB
 const initDB = async () => {
   try {
+    await mongoose.connect(MONGO_URL);
+    console.log("Connected to MongoDB");
+
+    // Delete existing data
     await Listing.deleteMany({});
-    await Listing.insertMany(sampleListings);
-    console.log(" Database init with sample listings");
+    await User.deleteMany({});
+
+    // Create demo user
+    const demoUser = new User(sampleUsers[0]);
+    await demoUser.setPassword("password123"); // Set a default password
+    await demoUser.save();
+    console.log("Demo user created");
+
+    // Update listings with owner and valid amenities
+    const updatedListings = sampleListings.map(listing => ({
+      ...listing,
+      owner: demoUser._id,
+      amenities: listing.amenities.filter(amenity => 
+        ["WiFi", "Kitchen", "Washer", "Dryer", "Air Conditioning", "Heating", 
+         "TV", "Pool", "Gym", "Parking", "Elevator", "Indoor Fireplace", 
+         "Breakfast", "Workspace", "Pets Allowed"].includes(amenity)
+      )
+    }));
+
+    // Insert listings
+    await Listing.insertMany(updatedListings);
+    console.log("Sample listings added");
+
   } catch (err) {
-    console.error(" Error init database:", err);
+    console.error("Error init database:", err);
   } finally {
-    mongoose.connection.close();
+    await mongoose.disconnect();
+    console.log("Disconnected from MongoDB");
   }
 };
 

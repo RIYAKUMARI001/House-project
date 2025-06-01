@@ -3,30 +3,109 @@
   <div class="container mt-5">
     <!-- Heading -->
     <div class="row mb-4">
-      <div class="col text-center">
-        <h3>Listing Details</h3>
+      <div class="col">
+        <h3 class="fw-bold"><%= listing.title %></h3>
+        <p class="text-muted">
+          <i class="fas fa-map-marker-alt"></i> <%= listing.location %>, <%= listing.country %>
+          <% if(listing.rating > 0) { %>
+            <span class="ms-3"><i class="fas fa-star" style="color: #FFD700;"></i> <%= listing.rating.toFixed(1) %></span>
+          <% } %>
+        </p>
       </div>
     </div>
 
-    <!-- Card -->
-    <div class="row justify-content-center">
-      <div class="card border-0" style="border-radius: 20px; max-width: 600px;">
-        <!-- Image -->
-        <img src="<%= listing.image.url %>" alt="Listing Image" class="card-img-top" style="border-top-left-radius: 20px; border-top-right-radius: 20px; object-fit: cover; max-height: 300px;">
+    <!-- Image Carousel -->
+    <div class="row mb-4">
+      <div class="col">
+        <div id="listingCarousel" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner" style="border-radius: 20px; overflow: hidden;">
+            <% if(listing.images && listing.images.length > 0) { %>
+              <% listing.images.forEach((image, index) => { %>
+                <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                  <img src="<%= image.url %>" class="d-block w-100" alt="<%= listing.title %>" style="height: 400px; object-fit: cover;">
+                </div>
+              <% }); %>
+            <% } else { %>
+              <div class="carousel-item active">
+                <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                     class="d-block w-100" alt="No image available" style="height: 400px; object-fit: cover;">
+              </div>
+            <% } %>
+          </div>
+          <% if(listing.images && listing.images.length > 1) { %>
+            <button class="carousel-control-prev" type="button" data-bs-target="#listingCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#listingCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          <% } %>
+        </div>
+      </div>
+    </div>
 
-        <!-- Content -->
-        <div class="card-body px-4 py-3">
-          <h5 class="card-title fw-bold mb-2"><%= listing.title %></h5>
-          <p class="card-text mb-2" style="color: #444;"><%= listing.description %></p>
-          <p class="card-text mb-2"><b>₹<%= listing.price ? listing.price.toLocaleString("en-IN") : "Price not available" %></b></p>
-          <p class="card-text"><%= listing.location %><br><%= listing.country %></p>
+    <!-- Details -->
+    <div class="row">
+      <div class="col-md-8">
+        <!-- Description -->
+        <div class="card border-0 mb-4" style="border-radius: 20px;">
+          <div class="card-body">
+            <h5 class="card-title fw-bold mb-3">About this place</h5>
+            <p class="card-text"><%= listing.description %></p>
+          </div>
         </div>
 
-        <!-- Buttons -->
-        <div class="d-flex justify-content-center gap-3 pb-4">
-          <a href="/listings/<%= listing._id %>/edit" class="btn btn-danger px-4">Edit</a>
+        <!-- Amenities -->
+        <% if(listing.amenities && listing.amenities.length > 0) { %>
+          <div class="card border-0 mb-4" style="border-radius: 20px;">
+            <div class="card-body">
+              <h5 class="card-title fw-bold mb-3">Amenities</h5>
+              <div class="row g-3">
+                <% listing.amenities.forEach(amenity => { %>
+                  <div class="col-6 col-md-4">
+                    <p class="mb-0"><i class="fas fa-check text-success me-2"></i><%= amenity %></p>
+                  </div>
+                <% }); %>
+              </div>
+            </div>
+          </div>
+        <% } %>
+      </div>
+
+      <!-- Booking Card -->
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm" style="border-radius: 20px; position: sticky; top: 20px;">
+          <div class="card-body">
+            <h5 class="card-title fw-bold mb-3">₹<%= listing.price ? listing.price.toLocaleString("en-IN") : "Price not available" %> <span class="text-muted" style="font-size: 0.9rem;">/ night</span></h5>
+            
+            <div class="mb-3">
+              <p class="mb-1"><i class="fas fa-bed me-2"></i><%= listing.bedrooms %> bedrooms</p>
+              <p class="mb-1"><i class="fas fa-bath me-2"></i><%= listing.bathrooms %> bathrooms</p>
+              <p class="mb-0"><i class="fas fa-users me-2"></i>Up to <%= listing.maxGuests %> guests</p>
+            </div>
+
+            <button class="btn btn-danger w-100 mb-2">Book Now</button>
+            <button class="btn btn-outline-danger w-100">
+              <i class="far fa-heart me-2"></i>Save to Wishlist
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="row mt-4 mb-5">
+      <div class="col">
+        <div class="d-flex gap-3">
+          <a href="/listings/<%= listing._id %>/edit" class="btn btn-outline-danger px-4">
+            <i class="fas fa-edit me-2"></i>Edit
+          </a>
           <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
-            <button class="btn btn-dark px-4">Delete</button>
+            <button class="btn btn-outline-dark px-4">
+              <i class="fas fa-trash-alt me-2"></i>Delete
+            </button>
           </form>
         </div>
       </div>

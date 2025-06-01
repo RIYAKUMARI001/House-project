@@ -8,13 +8,26 @@
         <div class="col-sm-6 col-md-4 col-lg-3">
           <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
             <div class="card" style="width: 100%; max-height: 350px; overflow: hidden;">
-              <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image" style="height: 220px; object-fit: cover;">
+              <% if(listing.images && listing.images.length > 0) { %>
+                <img src="<%= listing.images[0].url %>" class="card-img-top" alt="<%= listing.title %>" style="height: 220px; object-fit: cover;">
+              <% } else { %>
+                <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                     class="card-img-top" alt="No image available" style="height: 220px; object-fit: cover;">
+              <% } %>
               <div class="card-img-overlay"></div>
               <div class="card-body p-2">
                 <h6 class="card-title mb-1" style="font-size: 1rem;"><%= listing.title %></h6>
                 <p class="card-text mb-2" style="font-size: 0.9rem;">
                   <%= listing.price ? `₹${listing.price.toLocaleString("en-IN")}` : "Price not available" %> / night
                 </p>
+                <p class="card-text mb-1" style="font-size: 0.8rem; color: #666;">
+                  <i class="fas fa-map-marker-alt"></i> <%= listing.location %>
+                </p>
+                <% if(listing.rating > 0) { %>
+                  <p class="card-text mb-0" style="font-size: 0.8rem;">
+                    <i class="fas fa-star" style="color: #FFD700;"></i> <%= listing.rating.toFixed(1) %>
+                  </p>
+                <% } %>
               </div>
             </div>
           </a>
