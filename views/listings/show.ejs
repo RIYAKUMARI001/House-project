@@ -80,16 +80,55 @@
           <div class="card-body">
             <h5 class="card-title fw-bold mb-3">₹<%= listing.price ? listing.price.toLocaleString("en-IN") : "Price not available" %> <span class="text-muted" style="font-size: 0.9rem;">/ night</span></h5>
             
-            <div class="mb-3">
-              <p class="mb-1"><i class="fas fa-bed me-2"></i><%= listing.bedrooms %> bedrooms</p>
-              <p class="mb-1"><i class="fas fa-bath me-2"></i><%= listing.bathrooms %> bathrooms</p>
-              <p class="mb-0"><i class="fas fa-users me-2"></i>Up to <%= listing.maxGuests %> guests</p>
-            </div>
+            <form action="/bookings" method="POST" id="bookingForm">
+              <input type="hidden" name="listing" value="<%= listing._id %>">
+              
+              <div class="mb-3">
+                <label for="checkIn" class="form-label">Check-in</label>
+                <input type="date" class="form-control" id="checkIn" name="checkIn" required min="<%= new Date().toISOString().split('T')[0] %>">
+              </div>
 
-            <button class="btn btn-danger w-100 mb-2">Book Now</button>
-            <button class="btn btn-outline-danger w-100">
-              <i class="far fa-heart me-2"></i>Save to Wishlist
-            </button>
+              <div class="mb-3">
+                <label for="checkOut" class="form-label">Check-out</label>
+                <input type="date" class="form-control" id="checkOut" name="checkOut" required>
+              </div>
+
+              <div class="mb-3">
+                <label for="guests" class="form-label">Number of Guests</label>
+                <select class="form-select" id="guests" name="guests" required>
+                  <% for(let i = 1; i <= listing.maxGuests; i++) { %>
+                    <option value="<%= i %>"><%= i %> <%= i === 1 ? 'guest' : 'guests' %></option>
+                  <% } %>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label for="specialRequests" class="form-label">Special Requests (Optional)</label>
+                <textarea class="form-control" id="specialRequests" name="specialRequests" rows="2"></textarea>
+              </div>
+
+              <div class="mb-3 p-3 bg-light rounded">
+                <div class="d-flex justify-content-between mb-2">
+                  <span>₹<%= listing.price %> × <span id="nightsCount">0</span> nights</span>
+                  <span id="subtotal">₹0</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span>Service fee</span>
+                  <span id="serviceFee">₹0</span>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between fw-bold">
+                  <span>Total</span>
+                  <span id="totalPrice">₹0</span>
+                </div>
+                <input type="hidden" name="totalPrice" id="totalPriceInput">
+              </div>
+
+              <button type="submit" class="btn btn-danger w-100 mb-2" id="bookButton" disabled>Book Now</button>
+              <button type="button" class="btn btn-outline-danger w-100" id="wishlistButton">
+                <i class="far fa-heart me-2"></i>Save to Wishlist
+              </button>
+            </form>
           </div>
         </div>
       </div>
@@ -99,16 +138,89 @@
     <div class="row mt-4 mb-5">
       <div class="col">
         <div class="d-flex gap-3">
-          <a href="/listings/<%= listing._id %>/edit" class="btn btn-outline-danger px-4">
-            <i class="fas fa-edit me-2"></i>Edit
-          </a>
-          <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
-            <button class="btn btn-outline-dark px-4">
-              <i class="fas fa-trash-alt me-2"></i>Delete
-            </button>
-          </form>
+          <% if(currentUser && currentUser._id.equals(listing.owner._id)) { %>
+            <a href="/listings/<%= listing._id %>/edit" class="btn btn-outline-danger px-4">
+              <i class="fas fa-edit me-2"></i>Edit
+            </a>
+            <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
+              <button class="btn btn-outline-dark px-4">
+                <i class="fas fa-trash-alt me-2"></i>Delete
+              </button>
+            </form>
+          <% } %>
         </div>
       </div>
     </div>
   </div>
+
+  <script>
+    const pricePerNight = <%= listing.price || 0 %>;
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      const checkInInput = document.getElementById('checkIn');
+      const checkOutInput = document.getElementById('checkOut');
+      const nightsCount = document.getElementById('nightsCount');
+      const subtotal = document.getElementById('subtotal');
+      const serviceFee = document.getElementById('serviceFee');
+      const totalPrice = document.getElementById('totalPrice');
+      const totalPriceInput = document.getElementById('totalPriceInput');
+      const bookButton = document.getElementById('bookButton');
+      function calculateTotal() {
+        const checkIn = new Date(checkInInput.value);
+        const checkOut = new Date(checkOutInput.value);
+        
+        if (checkIn && checkOut && checkOut > checkIn) {
+          const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+          const subtotalAmount = nights * pricePerNight;
+          const serviceFeeAmount = Math.round(subtotalAmount * 0.12); // 12% service fee
+          const totalAmount = subtotalAmount + serviceFeeAmount;
+
+          nightsCount.textContent = nights;
+          subtotal.textContent = `₹${subtotalAmount.toLocaleString('en-IN')}`;
+          serviceFee.textContent = `₹${serviceFeeAmount.toLocaleString('en-IN')}`;
+          totalPrice.textContent = `₹${totalAmount.toLocaleString('en-IN')}`;
+          totalPriceInput.value = totalAmount;
+          
+          bookButton.disabled = false;
+        } else {
+          nightsCount.textContent = '0';
+          subtotal.textContent = '₹0';
+          serviceFee.textContent = '₹0';
+          totalPrice.textContent = '₹0';
+          totalPriceInput.value = '';
+          bookButton.disabled = true;
+        }
+      }
+
+      checkInInput.addEventListener('change', function() {
+        checkOutInput.min = this.value;
+        calculateTotal();
+      });
+
+      checkOutInput.addEventListener('change', calculateTotal);
+
+      // Wishlist functionality
+      const wishlistButton = document.getElementById('wishlistButton');
+      wishlistButton.addEventListener('click', function() {
+        <% if (currentUser) { %>
+          fetch('/wishlist/<%= listing._id %>', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          })
+          .then(response => {
+            if (response.ok) {
+              this.innerHTML = '<i class="fas fa-heart me-2"></i>Saved!';
+              this.classList.remove('btn-outline-danger');
+              this.classList.add('btn-danger');
+            }
+          })
+          .catch(error => console.error('Error:', error));
+        <% } else { %>
+          window.location.href = '/login';
+        <% } %>
+      });
+    });
+  </script>
 </body>

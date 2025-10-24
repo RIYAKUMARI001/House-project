@@ -4,7 +4,7 @@ const User = require("../models/user");
 const sampleListings = require("./data");
 const sampleUsers = require("./users");
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/test";
+const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 
 // Function to connect to the DB
 async function main() {

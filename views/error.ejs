@@ -1,0 +1,27 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="display-1 text-danger"><%= err.statusCode || 500 %></h1>
+                    <h2 class="mb-4">Oops! Something went wrong</h2>
+                    <p class="lead text-muted"><%= err.message %></p>
+                    
+                    <% if (process.env.NODE_ENV === 'development') { %>
+                        <div class="mt-4 text-start">
+                            <h5>Stack Trace:</h5>
+                            <pre class="bg-light p-3 text-start"><%= err.stack %></pre>
+                        </div>
+                    <% } %>
+                    
+                    <div class="mt-4">
+                        <a href="/listings" class="btn btn-primary">Go Home</a>
+                        <button onclick="history.back()" class="btn btn-secondary">Go Back</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
