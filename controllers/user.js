@@ -97,6 +97,7 @@ module.exports.addToWishlist = async (req, res) => {
         const { listingId } = req.params;
         const user = await User.findById(req.user._id);
         
+        // Only add if not already in wishlist
         if (!user.wishlist.includes(listingId)) {
             user.wishlist.push(listingId);
             await user.save();
@@ -109,6 +110,16 @@ module.exports.addToWishlist = async (req, res) => {
     } catch (err) {
         req.flash("error", "Something went wrong!");
         res.redirect("/listings");
+    }
+};
+
+// Get wishlist count
+module.exports.getWishlistCount = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        res.json({ count: user.wishlist.length });
+    } catch (err) {
+        res.json({ count: 0 });
     }
 };
 
@@ -131,7 +142,10 @@ module.exports.removeFromWishlist = async (req, res) => {
 module.exports.showWishlist = async (req, res) => {
     try {
         const user = await User.findById(req.user._id).populate("wishlist");
-        res.render("users/wishlist", { listings: user.wishlist });
+        res.render("users/wishlist", { 
+            listings: user.wishlist,
+            currentUser: user 
+        });
     } catch (err) {
         req.flash("error", "Something went wrong!");
         res.redirect("/listings");

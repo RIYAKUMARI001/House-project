@@ -127,26 +127,26 @@ module.exports.cancelBooking = async (req, res) => {
 
         if (!booking) {
             req.flash("error", "Booking not found!");
-            return res.redirect("/listings");
+            return res.redirect("/bookings");
         }
 
         // Check if the user is the guest
         if (!booking.guest._id.equals(req.user._id)) {
             req.flash("error", "You don't have permission to cancel this booking!");
-            return res.redirect("/listings");
+            return res.redirect("/bookings");
         }
 
         // Only allow cancellation if the booking is pending or confirmed
         if (!["pending", "confirmed"].includes(booking.status)) {
             req.flash("error", "This booking cannot be cancelled!");
-            return res.redirect(`/bookings/${booking._id}`);
+            return res.redirect("/bookings");
         }
 
         booking.status = "cancelled";
         await booking.save();
 
         req.flash("success", "Booking cancelled successfully!");
-        res.redirect(`/bookings/${booking._id}`);
+        res.redirect("/bookings");
     } catch (err) {
         req.flash("error", err.message);
         res.redirect("/listings");

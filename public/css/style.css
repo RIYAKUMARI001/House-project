@@ -202,3 +202,196 @@ body {
   border-color: #fe424d;
   box-shadow: 0 0 0 0.2rem rgba(254, 66, 77, 0.25);
 }
+
+/* Enhanced Wishlist & Save Functionality */
+.wishlist-btn {
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.wishlist-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(254, 66, 77, 0.3);
+}
+
+.wishlist-btn .fas {
+  color: #fe424d !important;
+}
+
+.wishlist-btn .far {
+  color: #6c757d !important;
+}
+
+/* Enhanced Cards */
+.listing-card {
+  border: none;
+  transition: all 0.3s ease;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.listing-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+.listing-card .card-img-top {
+  transition: transform 0.3s ease;
+}
+
+.listing-card:hover .card-img-top {
+  transform: scale(1.05);
+}
+
+/* Enhanced Navbar */
+.navbar {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95) !important;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.nav-link {
+  font-weight: 500;
+  transition: color 0.3s ease;
+  border-radius: 8px;
+  margin: 0 0.25rem;
+  padding: 0.5rem 1rem !important;
+}
+
+.nav-link:hover {
+  background: rgba(254, 66, 77, 0.1);
+  color: #fe424d !important;
+}
+
+/* Badge Animations */
+.badge {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Enhanced Search Section */
+.search-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 15px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.form-control, .form-select {
+  border-radius: 10px;
+  border: 2px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #fe424d;
+  box-shadow: 0 0 0 0.2rem rgba(254, 66, 77, 0.15);
+}
+
+/* Enhanced Buttons */
+.btn-primary {
+  background: linear-gradient(135deg, #fe424d, #ff6b6b);
+  border: none;
+  border-radius: 25px;
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(254, 66, 77, 0.3);
+}
+
+.btn-outline-secondary {
+  border-radius: 25px;
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+/* Loading Animation */
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255,255,255,.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Toast Notifications */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+/* Enhanced Footer */
+.f-info {
+  background: linear-gradient(135deg, #2c3e50, #34495e);
+  color: white;
+}
+
+.f-info a {
+  color: #ecf0f1 !important;
+  transition: color 0.3s ease;
+}
+
+.f-info a:hover {
+  color: #fe424d !important;
+}
+
+/* Responsive Enhancements */
+@media (max-width: 768px) {
+  .listing-card {
+    margin-bottom: 1.5rem;
+  }
+  
+  .search-section {
+    padding: 1rem;
+  }
+  
+  .navbar-brand {
+    font-size: 1.25rem;
+  }
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Enhanced Dropdown */
+.dropdown-menu {
+  border: none;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  padding: 0.5rem 0;
+}
+
+.dropdown-item {
+  padding: 0.75rem 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background: rgba(254, 66, 77, 0.1);
+  color: #fe424d;
+}

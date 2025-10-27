@@ -33,16 +33,17 @@ module.exports.index = async (req, res) => {
         // Get unique categories for filter dropdown
         const categories = await Listing.distinct('category');
         
-        console.log('Rendering with:', {
-            listingsCount: listings.length,
-            categoriesCount: categories.length,
-            query: req.query
-        });
+        // Get current user with wishlist if logged in
+        let currentUserWithWishlist = null;
+        if (req.user) {
+            currentUserWithWishlist = await User.findById(req.user._id);
+        }
         
         res.render("listings/index", { 
             listings, 
             categories: categories || [],
-            currentFilters: req.query || {}
+            currentFilters: req.query || {},
+            currentUser: currentUserWithWishlist || req.user
         });
     } catch (err) {
         req.flash("error", "Something went wrong!");
@@ -86,7 +87,16 @@ module.exports.showListing = async (req, res) => {
             return res.redirect("/listings");
         }
         
-        res.render("listings/show", { listing });
+        // Get current user with wishlist if logged in
+        let currentUserWithWishlist = null;
+        if (req.user) {
+            currentUserWithWishlist = await User.findById(req.user._id);
+        }
+        
+        res.render("listings/show", { 
+            listing,
+            currentUser: currentUserWithWishlist || req.user
+        });
     } catch (err) {
         req.flash("error", "Something went wrong!");
         res.redirect("/listings");

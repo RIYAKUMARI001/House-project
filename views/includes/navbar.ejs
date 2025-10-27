@@ -1,6 +1,8 @@
-<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+<nav class="navbar navbar-expand-md bg-white shadow-sm sticky-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/"><i class="fa-regular fa-compass"></i></i></a>
+    <a class="navbar-brand fw-bold text-danger" href="/">
+      <i class="fa-regular fa-compass me-2"></i>Wanderlust
+    </a>
     <button class="navbar-toggler" type="button" 
     data-bs-toggle="collapse" 
     data-bs-target="#navbarNavAltMarkup" 
@@ -8,11 +10,61 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav me-auto">
+        <a class="nav-link" href="/">
+          <i class="fas fa-home me-1"></i>Home
+        </a>
+        <a class="nav-link" href="/listings">
+          <i class="fas fa-list me-1"></i>All Listings
+        </a>
+        <% if (currentUser) { %>
+          <a class="nav-link" href="/listings/new">
+            <i class="fas fa-plus me-1"></i>Add Listing
+          </a>
+        <% } %>
+      </div>
+      
       <div class="navbar-nav">
-        <a class="nav-link active" href="/">Home</a>
-        <a class="nav-link" href="/listings">All Listings</a>
-        <a class="nav-link" href="/listings/new">Add new Listing</a>
-       
+        <% if (currentUser) { %>
+          <a class="nav-link position-relative" href="/wishlist">
+            <i class="fas fa-heart me-1 text-danger"></i>Wishlist
+            <% if (currentUser && currentUser.wishlist && currentUser.wishlist.length > 0) { %>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="wishlist-count" style="font-size: 0.6rem;">
+                <%= currentUser.wishlist.length %>
+              </span>
+            <% } %>
+          </a>
+          <a class="nav-link" href="/bookings">
+            <i class="fas fa-calendar-check me-1"></i>My Bookings
+          </a>
+          <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-user-circle me-1"></i><%= currentUser.firstName || currentUser.username %>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/profile">
+                <i class="fas fa-user me-2"></i>Profile
+              </a></li>
+              <li><a class="dropdown-item" href="/bookings">
+                <i class="fas fa-calendar me-2"></i>My Bookings
+              </a></li>
+              <li><a class="dropdown-item" href="/wishlist">
+                <i class="fas fa-heart me-2"></i>Wishlist
+              </a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="/logout">
+                <i class="fas fa-sign-out-alt me-2"></i>Logout
+              </a></li>
+            </ul>
+          </div>
+        <% } else { %>
+          <a class="nav-link" href="/login">
+            <i class="fas fa-sign-in-alt me-1"></i>Login
+          </a>
+          <a class="nav-link" href="/signup">
+            <i class="fas fa-user-plus me-1"></i>Sign Up
+          </a>
+        <% } %>
       </div>
     </div>
   </div>

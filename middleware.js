@@ -10,6 +10,14 @@ module.exports.isLoggedIn = (req, res, next) => {
     next();
 };
 
+// API version of isLoggedIn that returns JSON instead of redirect
+module.exports.isLoggedInAPI = (req, res, next) => {
+    if (!req.isAuthenticated()) {
+        return res.json({ success: false, message: "You must be signed in!" });
+    }
+    next();
+};
+
 module.exports.isAuthor = async (req, res, next) => {
     try {
         const { id } = req.params;

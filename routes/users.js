@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/user");
 const passport = require("passport");
+const { isLoggedIn, isLoggedInAPI } = require("../middleware");
 
 // Register Routes
 router.get("/signup", userController.renderSignupForm);
@@ -25,9 +26,18 @@ router.get("/profile", userController.showProfile);
 router.get("/profile/edit", userController.renderEditProfile);
 router.put("/profile", userController.updateProfile);
 
+// Test route
+router.get("/test-wishlist", (req, res) => {
+    res.json({ 
+        message: "Route working!", 
+        user: req.user ? req.user.username : "Not logged in",
+        authenticated: req.isAuthenticated()
+    });
+});
+
 // Wishlist Routes
-router.get("/wishlist", userController.showWishlist);
-router.post("/wishlist/:listingId", userController.addToWishlist);
-router.delete("/wishlist/:listingId", userController.removeFromWishlist);
+router.get("/wishlist", isLoggedIn, userController.showWishlist);
+router.post("/wishlist/:listingId", isLoggedIn, userController.addToWishlist);
+router.delete("/wishlist/:listingId", isLoggedIn, userController.removeFromWishlist);
 
 module.exports = router;

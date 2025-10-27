@@ -2,12 +2,15 @@
 
 <body>
   <div class="container mt-4">
-    <!-- Search and Filter Section -->
-    <div class="row mb-4">
-      <div class="col-12">
-        <div class="card">
-          <div class="card-body">
-            <form action="/listings" method="GET" class="row g-3">
+    <!-- Enhanced Search and Filter Section -->
+    <div class="search-section">
+      <div class="row mb-3">
+        <div class="col-12 text-center">
+          <h4 class="fw-bold text-dark mb-1">Find Your Perfect Stay</h4>
+          <p class="text-muted">Discover amazing places around the world</p>
+        </div>
+      </div>
+      <form action="/listings" method="GET" class="row g-3">
               <div class="col-md-4">
                 <label for="search" class="form-label">Search</label>
                 <input type="text" class="form-control" id="search" name="search" 
@@ -45,14 +48,15 @@
                        placeholder="Guests" min="1" value="<%= currentFilters.guests || '' %>">
               </div>
               
-              <div class="col-12">
-                <button type="submit" class="btn btn-primary">Search</button>
-                <a href="/listings" class="btn btn-outline-secondary">Clear</a>
+              <div class="col-12 text-center">
+                <button type="submit" class="btn btn-primary me-2">
+                  <i class="fas fa-search me-2"></i>Search Properties
+                </button>
+                <a href="/listings" class="btn btn-outline-secondary">
+                  <i class="fas fa-times me-2"></i>Clear Filters
+                </a>
               </div>
             </form>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -70,35 +74,105 @@
     <% } else { %>
       <div class="row g-3">
       <% for(let listing of listings) { %>
-        <div class="col-sm-6 col-md-4 col-lg-3">
-          <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
-            <div class="card" style="width: 100%; max-height: 350px; overflow: hidden;">
+        <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+          <div class="card listing-card h-100 shadow-sm">
+            <div class="position-relative">
               <% if(listing.images && listing.images.length > 0) { %>
                 <img src="<%= listing.images[0].url %>" class="card-img-top" alt="<%= listing.title %>" style="height: 220px; object-fit: cover;">
               <% } else { %>
                 <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
                      class="card-img-top" alt="No image available" style="height: 220px; object-fit: cover;">
               <% } %>
-              <div class="card-img-overlay"></div>
-              <div class="card-body p-2">
-                <h6 class="card-title mb-1" style="font-size: 1rem;"><%= listing.title %></h6>
-                <p class="card-text mb-2" style="font-size: 0.9rem;">
-                  <%= listing.price ? `₹${listing.price.toLocaleString("en-IN")}` : "Price not available" %> / night
-                </p>
-                <p class="card-text mb-1" style="font-size: 0.8rem; color: #666;">
-                  <i class="fas fa-map-marker-alt"></i> <%= listing.location %>
-                </p>
-                <% if(listing.rating > 0) { %>
-                  <p class="card-text mb-0" style="font-size: 0.8rem;">
-                    <i class="fas fa-star" style="color: #FFD700;"></i> <%= listing.rating.toFixed(1) %>
-                  </p>
+              
+              <!-- Save/Heart Button -->
+              <% if (currentUser) { %>
+                <% 
+                  // Check if listing is in user's wishlist
+                  const isInWishlist = currentUser.wishlist && currentUser.wishlist.some(id => id.toString() === listing._id.toString());
+                %>
+                <% if (!isInWishlist) { %>
+                  <form action="/wishlist/<%= listing._id %>" method="POST" class="d-inline">
+                    <button type="submit" class="btn btn-sm position-absolute top-0 end-0 m-2" 
+                            style="background: rgba(255,255,255,0.9); border: none; border-radius: 50%; width: 40px; height: 40px; z-index: 10; cursor: pointer;">
+                      <i class="far fa-heart text-danger"></i>
+                    </button>
+                  </form>
+                <% } else { %>
+                  <div class="position-absolute top-0 end-0 m-2" 
+                       style="background: rgba(254, 66, 77, 0.1); border: none; border-radius: 50%; width: 40px; height: 40px; z-index: 10; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-heart text-danger"></i>
+                  </div>
                 <% } %>
-              </div>
+              <% } %>
+              
+              <!-- Category Badge -->
+              <span class="position-absolute top-0 start-0 m-2 badge bg-primary">
+                <%= listing.category %>
+              </span>
             </div>
-          </a>
+            
+            <div class="card-body p-3">
+              <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
+                <h6 class="card-title mb-2 fw-bold"><%= listing.title %></h6>
+                <p class="card-text mb-2 text-muted small">
+                  <i class="fas fa-map-marker-alt me-1"></i><%= listing.location %>, <%= listing.country %>
+                </p>
+                
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <div class="text-muted small">
+                    <i class="fas fa-users me-1"></i><%= listing.maxGuests %> guests
+                    <i class="fas fa-bed ms-2 me-1"></i><%= listing.bedrooms %> bed
+                  </div>
+                  <% if(listing.rating > 0) { %>
+                    <div class="rating-stars small">
+                      <i class="fas fa-star"></i> <%= listing.rating.toFixed(1) %>
+                    </div>
+                  <% } %>
+                </div>
+                
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="price-badge">
+                    ₹<%= listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %> / night
+                  </div>
+                  <small class="text-muted">
+                    <% if(listing.isAvailable) { %>
+                      <i class="fas fa-check-circle text-success"></i> Available
+                    <% } else { %>
+                      <i class="fas fa-times-circle text-danger"></i> Booked
+                    <% } %>
+                  </small>
+                </div>
+              </a>
+            </div>
+          </div>
         </div>
       <% } %>
       </div>
     <% } %>
   </div>
+
+
+
+  <!-- Floating Action Button -->
+  <% if (currentUser) { %>
+    <div class="position-fixed bottom-0 end-0 p-4" style="z-index: 1000;">
+      <div class="dropdown dropup">
+        <button class="btn btn-danger rounded-circle shadow-lg" type="button" data-bs-toggle="dropdown" 
+                style="width: 60px; height: 60px; font-size: 1.5rem;">
+          <i class="fas fa-plus"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end mb-2">
+          <li><a class="dropdown-item" href="/listings/new">
+            <i class="fas fa-home me-2"></i>Add New Listing
+          </a></li>
+          <li><a class="dropdown-item" href="/wishlist">
+            <i class="fas fa-heart me-2"></i>View Wishlist
+          </a></li>
+          <li><a class="dropdown-item" href="/bookings">
+            <i class="fas fa-calendar me-2"></i>My Bookings
+          </a></li>
+        </ul>
+      </div>
+    </div>
+  <% } %>
 </body>

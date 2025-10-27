@@ -1,15 +1,20 @@
 <% layout("layouts/boilerplate") %>
-<body style="background-color: #f8f9fa; font-family: 'Segoe UI', sans-serif;">
+
   <div class="container mt-5">
     <!-- Heading -->
     <div class="row mb-4">
       <div class="col">
-        <h3 class="fw-bold"><%= listing.title %></h3>
+        <h3 class="fw-bold">
+          <%= listing.title %>
+        </h3>
         <p class="text-muted">
-          <i class="fas fa-map-marker-alt"></i> <%= listing.location %>, <%= listing.country %>
-          <% if(listing.rating > 0) { %>
-            <span class="ms-3"><i class="fas fa-star" style="color: #FFD700;"></i> <%= listing.rating.toFixed(1) %></span>
-          <% } %>
+          <i class="fas fa-map-marker-alt"></i>
+          <%= listing.location %>, <%= listing.country %>
+              <% if(listing.rating> 0) { %>
+                <span class="ms-3"><i class="fas fa-star" style="color: #FFD700;"></i>
+                  <%= listing.rating.toFixed(1) %>
+                </span>
+                <% } %>
         </p>
       </div>
     </div>
@@ -19,20 +24,22 @@
       <div class="col">
         <div id="listingCarousel" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-inner" style="border-radius: 20px; overflow: hidden;">
-            <% if(listing.images && listing.images.length > 0) { %>
-              <% listing.images.forEach((image, index) => { %>
+            <% if(listing.images && listing.images.length> 0) { %>
+              <% listing.images.forEach((image, index)=> { %>
                 <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
-                  <img src="<%= image.url %>" class="d-block w-100" alt="<%= listing.title %>" style="height: 400px; object-fit: cover;">
+                  <img src="<%= image.url %>" class="d-block w-100" alt="<%= listing.title %>"
+                    style="height: 400px; object-fit: cover;">
                 </div>
-              <% }); %>
-            <% } else { %>
-              <div class="carousel-item active">
-                <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
-                     class="d-block w-100" alt="No image available" style="height: 400px; object-fit: cover;">
-              </div>
-            <% } %>
+                <% }); %>
+                  <% } else { %>
+                    <div class="carousel-item active">
+                      <img
+                        src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+                        class="d-block w-100" alt="No image available" style="height: 400px; object-fit: cover;">
+                    </div>
+                    <% } %>
           </div>
-          <% if(listing.images && listing.images.length > 1) { %>
+          <% if(listing.images && listing.images.length> 1) { %>
             <button class="carousel-control-prev" type="button" data-bs-target="#listingCarousel" data-bs-slide="prev">
               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
               <span class="visually-hidden">Previous</span>
@@ -41,7 +48,7 @@
               <span class="carousel-control-next-icon" aria-hidden="true"></span>
               <span class="visually-hidden">Next</span>
             </button>
-          <% } %>
+            <% } %>
         </div>
       </div>
     </div>
@@ -53,82 +60,117 @@
         <div class="card border-0 mb-4" style="border-radius: 20px;">
           <div class="card-body">
             <h5 class="card-title fw-bold mb-3">About this place</h5>
-            <p class="card-text"><%= listing.description %></p>
+            <p class="card-text">
+              <%= listing.description %>
+            </p>
           </div>
         </div>
 
         <!-- Amenities -->
-        <% if(listing.amenities && listing.amenities.length > 0) { %>
+        <% if(listing.amenities && listing.amenities.length> 0) { %>
           <div class="card border-0 mb-4" style="border-radius: 20px;">
             <div class="card-body">
               <h5 class="card-title fw-bold mb-3">Amenities</h5>
               <div class="row g-3">
-                <% listing.amenities.forEach(amenity => { %>
+                <% listing.amenities.forEach(amenity=> { %>
                   <div class="col-6 col-md-4">
-                    <p class="mb-0"><i class="fas fa-check text-success me-2"></i><%= amenity %></p>
+                    <p class="mb-0"><i class="fas fa-check text-success me-2"></i>
+                      <%= amenity %>
+                    </p>
                   </div>
-                <% }); %>
+                  <% }); %>
               </div>
             </div>
           </div>
-        <% } %>
+          <% } %>
       </div>
 
       <!-- Booking Card -->
       <div class="col-md-4">
         <div class="card border-0 shadow-sm" style="border-radius: 20px; position: sticky; top: 20px;">
           <div class="card-body">
-            <h5 class="card-title fw-bold mb-3">₹<%= listing.price ? listing.price.toLocaleString("en-IN") : "Price not available" %> <span class="text-muted" style="font-size: 0.9rem;">/ night</span></h5>
-            
-            <form action="/bookings" method="POST" id="bookingForm">
-              <input type="hidden" name="listing" value="<%= listing._id %>">
-              
-              <div class="mb-3">
-                <label for="checkIn" class="form-label">Check-in</label>
-                <input type="date" class="form-control" id="checkIn" name="checkIn" required min="<%= new Date().toISOString().split('T')[0] %>">
-              </div>
+            <h5 class="card-title fw-bold mb-3">
+              ₹<%= listing.price ? listing.price.toLocaleString("en-IN") : "Price not available" %>
+                <span class="text-muted" style="font-size: 0.9rem;">/ night</span>
+            </h5>
 
-              <div class="mb-3">
-                <label for="checkOut" class="form-label">Check-out</label>
-                <input type="date" class="form-control" id="checkOut" name="checkOut" required>
-              </div>
+            <form action="/bookings" method="POST" id="bookingForm" data-price="<%= listing.price || 0 %>"></form>
+            <input type="hidden" name="listing" value="<%= listing._id %>">
 
-              <div class="mb-3">
-                <label for="guests" class="form-label">Number of Guests</label>
-                <select class="form-select" id="guests" name="guests" required>
-                  <% for(let i = 1; i <= listing.maxGuests; i++) { %>
-                    <option value="<%= i %>"><%= i %> <%= i === 1 ? 'guest' : 'guests' %></option>
+            <div class="mb-3">
+              <label for="checkIn" class="form-label">Check-in</label>
+              <input type="date" class="form-control" id="checkIn" name="checkIn" required
+                min="<%= new Date().toISOString().split('T')[0] %>">
+            </div>
+
+            <div class="mb-3">
+              <label for="checkOut" class="form-label">Check-out</label>
+              <input type="date" class="form-control" id="checkOut" name="checkOut" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="guests" class="form-label">Number of Guests</label>
+              <select class="form-select" id="guests" name="guests" required>
+                <% for(let i=1; i <=listing.maxGuests; i++) { %>
+                  <option value="<%= i %>">
+                    <%= i %>
+                      <%= i===1 ? 'guest' : 'guests' %>
+                  </option>
                   <% } %>
-                </select>
-              </div>
+              </select>
+            </div>
 
-              <div class="mb-3">
-                <label for="specialRequests" class="form-label">Special Requests (Optional)</label>
-                <textarea class="form-control" id="specialRequests" name="specialRequests" rows="2"></textarea>
-              </div>
+            <div class="mb-3">
+              <label for="specialRequests" class="form-label">Special Requests (Optional)</label>
+              <textarea class="form-control" id="specialRequests" name="specialRequests" rows="2"></textarea>
+            </div>
 
-              <div class="mb-3 p-3 bg-light rounded">
-                <div class="d-flex justify-content-between mb-2">
-                  <span>₹<%= listing.price %> × <span id="nightsCount">0</span> nights</span>
-                  <span id="subtotal">₹0</span>
-                </div>
-                <div class="d-flex justify-content-between mb-2">
-                  <span>Service fee</span>
-                  <span id="serviceFee">₹0</span>
-                </div>
-                <hr>
-                <div class="d-flex justify-content-between fw-bold">
-                  <span>Total</span>
-                  <span id="totalPrice">₹0</span>
-                </div>
-                <input type="hidden" name="totalPrice" id="totalPriceInput">
+            <div class="mb-3 p-3 bg-light rounded">
+              <div class="d-flex justify-content-between mb-2">
+                <span>₹<%= listing.price %> × <span id="nightsCount">0</span> nights</span>
+                <span id="subtotal">₹0</span>
               </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span>Service fee</span>
+                <span id="serviceFee">₹0</span>
+              </div>
+              <hr>
+              <div class="d-flex justify-content-between fw-bold">
+                <span>Total</span>
+                <span id="totalPrice">₹0</span>
+              </div>
+              <input type="hidden" name="totalPrice" id="totalPriceInput">
+            </div>
 
-              <button type="submit" class="btn btn-danger w-100 mb-2" id="bookButton" disabled>Book Now</button>
-              <button type="button" class="btn btn-outline-danger w-100" id="wishlistButton">
-                <i class="far fa-heart me-2"></i>Save to Wishlist
-              </button>
+            <button type="submit" class="btn btn-danger w-100 mb-2" id="bookButton" disabled>Book Now</button>
             </form>
+
+            <!-- Wishlist Button -->
+            <% if (currentUser) { %>
+              <% const isInWishlist=currentUser.wishlist && currentUser.wishlist.some(id=> id.toString() ===
+                listing._id.toString());
+                %>
+                <% if (!isInWishlist) { %>
+                  <form action="/wishlist/<%= listing._id %>" method="POST" class="mt-2">
+                    <button type="submit" class="btn btn-outline-danger w-100">
+                      <i class="far fa-heart me-2"></i>Save to Wishlist
+                    </button>
+                  </form>
+                  <% } else { %>
+                    <div class="mt-2">
+                      <button class="btn btn-danger w-100" disabled>
+                        <i class="fas fa-heart me-2"></i>Saved to Wishlist
+                      </button>
+                      <small class="text-muted d-block text-center mt-1">
+                        Go to <a href="/wishlist">wishlist</a> to remove
+                      </small>
+                    </div>
+                    <% } %>
+                      <% } else { %>
+                        <a href="/login" class="btn btn-outline-danger w-100 mt-2">
+                          <i class="far fa-heart me-2"></i>Login to Save
+                        </a>
+                        <% } %>
           </div>
         </div>
       </div>
@@ -142,21 +184,21 @@
             <a href="/listings/<%= listing._id %>/edit" class="btn btn-outline-danger px-4">
               <i class="fas fa-edit me-2"></i>Edit
             </a>
-            <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
+            <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" class="d-inline">
               <button class="btn btn-outline-dark px-4">
                 <i class="fas fa-trash-alt me-2"></i>Delete
               </button>
             </form>
-          <% } %>
+            <% } %>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    const pricePerNight = <%= listing.price || 0 %>;
-    
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
+      const bookingForm = document.getElementById('bookingForm');
+      const pricePerNight = parseInt(bookingForm.dataset.price) || 0;
       const checkInInput = document.getElementById('checkIn');
       const checkOutInput = document.getElementById('checkOut');
       const nightsCount = document.getElementById('nightsCount');
@@ -165,22 +207,23 @@
       const totalPrice = document.getElementById('totalPrice');
       const totalPriceInput = document.getElementById('totalPriceInput');
       const bookButton = document.getElementById('bookButton');
+
       function calculateTotal() {
         const checkIn = new Date(checkInInput.value);
         const checkOut = new Date(checkOutInput.value);
-        
+
         if (checkIn && checkOut && checkOut > checkIn) {
           const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
           const subtotalAmount = nights * pricePerNight;
-          const serviceFeeAmount = Math.round(subtotalAmount * 0.12); // 12% service fee
+          const serviceFeeAmount = Math.round(subtotalAmount * 0.12);
           const totalAmount = subtotalAmount + serviceFeeAmount;
 
           nightsCount.textContent = nights;
-          subtotal.textContent = `₹${subtotalAmount.toLocaleString('en-IN')}`;
-          serviceFee.textContent = `₹${serviceFeeAmount.toLocaleString('en-IN')}`;
-          totalPrice.textContent = `₹${totalAmount.toLocaleString('en-IN')}`;
+          subtotal.textContent = '₹' + subtotalAmount.toLocaleString('en-IN');
+          serviceFee.textContent = '₹' + serviceFeeAmount.toLocaleString('en-IN');
+          totalPrice.textContent = '₹' + totalAmount.toLocaleString('en-IN');
           totalPriceInput.value = totalAmount;
-          
+
           bookButton.disabled = false;
         } else {
           nightsCount.textContent = '0';
@@ -192,35 +235,11 @@
         }
       }
 
-      checkInInput.addEventListener('change', function() {
+      checkInInput.addEventListener('change', function () {
         checkOutInput.min = this.value;
         calculateTotal();
       });
 
       checkOutInput.addEventListener('change', calculateTotal);
-
-      // Wishlist functionality
-      const wishlistButton = document.getElementById('wishlistButton');
-      wishlistButton.addEventListener('click', function() {
-        <% if (currentUser) { %>
-          fetch('/wishlist/<%= listing._id %>', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            }
-          })
-          .then(response => {
-            if (response.ok) {
-              this.innerHTML = '<i class="fas fa-heart me-2"></i>Saved!';
-              this.classList.remove('btn-outline-danger');
-              this.classList.add('btn-danger');
-            }
-          })
-          .catch(error => console.error('Error:', error));
-        <% } else { %>
-          window.location.href = '/login';
-        <% } %>
-      });
     });
   </script>
-</body>
