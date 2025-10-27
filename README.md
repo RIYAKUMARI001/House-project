@@ -1,6 +1,38 @@
 # 🏠 Wanderlust - Airbnb Clone
 
 A full-stack web application built with Node.js, Express, MongoDB, and EJS that allows users to list, search, and book accommodations similar to Airbnb.
+## 📸 Project Glimpse
+
+### 🏡 Homepage & Listings
+![Homepage](<img width="1882" height="897" alt="Screenshot 2025-10-27 195039" src="https://github.com/user-attachments/assets/a22b344b-bffa-453a-bf02-b59788d6b357" />)
+*Browse through beautiful listings with advanced search and filtering options*
+
+### 🔍 Search & Filter
+![Search](<img width="1236" height="707" alt="Screenshot 2025-10-27 195211" src="https://github.com/user-attachments/assets/56e7ab6c-6fb4-421e-b798-15e8d993cf81" />
+)
+*Find your perfect stay with category, price, and location filters*
+
+### 🏠 Property Details
+![Property Details](<img width="921" height="791" alt="Screenshot 2025-10-27 195309" src="https://github.com/user-attachments/assets/ffec87d2-520d-45b7-908a-94871bb76a9e" />
+)
+*Detailed property information with booking functionality and wishlist*
+
+### ❤️ Wishlist
+![Wishlist](<img width="984" height="498" alt="Screenshot 2025-10-27 195402" src="https://github.com/user-attachments/assets/50aa9500-ce9d-43aa-ba76-8d7f3c0d7454" />
+)
+*Save your favorite properties for later*
+
+### 📅 Booking Management
+![Bookings](<img width="691" height="484" alt="Screenshot 2025-10-27 195521" src="https://github.com/user-attachments/assets/6a7871da-9f11-47e0-bd37-042987b8eec7" />)
+
+*Manage your bookings with status tracking*
+
+### 👤 User Profile
+![Profile](<img width="1083" height="361" alt="Screenshot 2025-10-27 195355" src="https://github.com/user-attachments/assets/ac825810-31df-461e-a508-44493d8122e8" />
+)
+*Complete user profile management*
+
+---
 
 ## ✨ Features
 
