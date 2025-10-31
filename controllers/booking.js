@@ -3,7 +3,7 @@ const Listing = require("../models/listing");
 const User = require("../models/user");
 
 // Create a new booking
-module.exports.createBooking = async (req, res) => {
+module.exports.createBooking = async (req, res, next) => {
     try {
         const { listing, checkIn, checkOut, guests, totalPrice, specialRequests } = req.body;
         
@@ -40,7 +40,7 @@ module.exports.createBooking = async (req, res) => {
 };
 
 // Show booking details
-module.exports.showBooking = async (req, res) => {
+module.exports.showBooking = async (req, res, next) => {
     try {
         const booking = await Booking.findById(req.params.id)
             .populate({
@@ -70,7 +70,7 @@ module.exports.showBooking = async (req, res) => {
 };
 
 // Show user's bookings
-module.exports.userBookings = async (req, res) => {
+module.exports.userBookings = async (req, res, next) => {
     try {
         const user = await User.findById(req.user._id)
             .populate({
@@ -89,7 +89,7 @@ module.exports.userBookings = async (req, res) => {
 };
 
 // Update booking status (for hosts)
-module.exports.updateBookingStatus = async (req, res) => {
+module.exports.updateBookingStatus = async (req, res, next) => {
     try {
         const { id } = req.params;
         const { status } = req.body;
@@ -108,11 +108,11 @@ module.exports.updateBookingStatus = async (req, res) => {
             return res.redirect("/listings");
         }
 
-        booking.status = status;
-        await booking.save();
+        // Update status using findByIdAndUpdate to avoid validation issues
+        await Booking.findByIdAndUpdate(id, { status });
 
         req.flash("success", "Booking status updated successfully!");
-        res.redirect(`/bookings/${booking._id}`);
+        res.redirect(`/bookings/${id}`);
     } catch (err) {
         req.flash("error", err.message);
         res.redirect("/listings");
@@ -120,7 +120,7 @@ module.exports.updateBookingStatus = async (req, res) => {
 };
 
 // Cancel booking (for guests)
-module.exports.cancelBooking = async (req, res) => {
+module.exports.cancelBooking = async (req, res, next) => {
     try {
         const { id } = req.params;
         const booking = await Booking.findById(id);
@@ -142,13 +142,16 @@ module.exports.cancelBooking = async (req, res) => {
             return res.redirect("/bookings");
         }
 
-        booking.status = "cancelled";
-        await booking.save();
+        // Update status using findByIdAndUpdate to avoid pre-save hooks
+        await Booking.findByIdAndUpdate(id, { 
+            status: "cancelled",
+            paymentStatus: "refunded"
+        });
 
         req.flash("success", "Booking cancelled successfully!");
         res.redirect("/bookings");
     } catch (err) {
         req.flash("error", err.message);
-        res.redirect("/listings");
+        res.redirect("/bookings");
     }
 }; 

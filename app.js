@@ -23,8 +23,13 @@ async function main() {
     await mongoose.connect(MONGO_URL);
 }
 
-main().then(() => console.log("Connected to database"))
-.catch((err) => console.log(err));
+main()
+    .then(() => console.log("✓ Connected to MongoDB database successfully"))
+    .catch((err) => {
+        console.error("✗ MongoDB connection error:", err.message);
+        console.error("Please ensure MongoDB is running on your system.");
+        process.exit(1);
+    });
 
 // Session configuration
 const sessionOptions = {
@@ -82,8 +87,21 @@ app.get("/", (req, res) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
+    console.error(err.stack);
     const { statusCode = 500 } = err;
     if (!err.message) err.message = "Something went wrong!";
+    
+    // Handle specific error types
+    if (err.name === 'ValidationError') {
+        req.flash('error', 'Validation Error: ' + err.message);
+        return res.redirect(req.get('referer') || '/listings');
+    }
+    
+    if (err.name === 'MongoError' || err.name === 'MongoServerError') {
+        req.flash('error', 'Database Error: ' + err.message);
+        return res.redirect(req.get('referer') || '/listings');
+    }
+    
     res.status(statusCode).render("error", { err });
 });
 

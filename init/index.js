@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Listing = require("../models/listing");
 const User = require("../models/user");
+const Booking = require("../models/booking");
 const sampleListings = require("./data");
 const sampleUsers = require("./users");
 
@@ -26,12 +27,18 @@ const initDB = async () => {
     // Delete existing data
     await Listing.deleteMany({});
     await User.deleteMany({});
+    await Booking.deleteMany({});
+    console.log("Cleared existing data");
 
     // Create demo user
-    const demoUser = new User(sampleUsers[0]);
-    await demoUser.setPassword("password123"); // Set a default password
-    await demoUser.save();
-    console.log("Demo user created");
+    const demoUser = new User({
+      email: sampleUsers[0].email,
+      username: sampleUsers[0].username,
+      firstName: sampleUsers[0].firstName,
+      lastName: sampleUsers[0].lastName
+    });
+    await User.register(demoUser, "password123"); // Using passport-local-mongoose register method
+    console.log("Demo user created - Username: " + demoUser.username + ", Password: password123");
 
     // Update listings with owner and valid amenities
     const updatedListings = sampleListings.map(listing => ({

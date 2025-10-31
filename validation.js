@@ -35,7 +35,7 @@ module.exports.reviewSchema = Joi.object({
 // Booking validation schema
 module.exports.bookingSchema = Joi.object({
     listing: Joi.string().required(),
-    checkIn: Joi.date().required().greater('now'),
+    checkIn: Joi.date().required().min('now'),
     checkOut: Joi.date().required().greater(Joi.ref('checkIn')),
     guests: Joi.number().required().min(1).max(50),
     totalPrice: Joi.number().required().min(0),
@@ -58,7 +58,7 @@ module.exports.validateListing = (req, res, next) => {
     if (error) {
         const msg = error.details.map(el => el.message).join(',');
         req.flash('error', msg);
-        return res.redirect('back');
+        return res.redirect(req.get('referer') || '/listings');
     }
     next();
 };
@@ -68,7 +68,7 @@ module.exports.validateReview = (req, res, next) => {
     if (error) {
         const msg = error.details.map(el => el.message).join(',');
         req.flash('error', msg);
-        return res.redirect('back');
+        return res.redirect(req.get('referer') || '/listings');
     }
     next();
 };
@@ -78,7 +78,7 @@ module.exports.validateBooking = (req, res, next) => {
     if (error) {
         const msg = error.details.map(el => el.message).join(',');
         req.flash('error', msg);
-        return res.redirect('back');
+        return res.redirect(req.get('referer') || '/listings');
     }
     next();
 };

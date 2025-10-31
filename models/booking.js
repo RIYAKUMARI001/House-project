@@ -46,27 +46,46 @@ const bookingSchema = new Schema({
 
 bookingSchema.pre('save', function(next) {
     if (this.checkOut <= this.checkIn) {
-        next(new Error('Check-out date must be after check-in date'));
+        return next(new Error('Check-out date must be after check-in date'));
     }
     next();
 });
 
 bookingSchema.pre('save', async function(next) {
-    const overlappingBooking = await this.constructor.findOne({
-        listing: this.listing,
-        status: { $in: ["pending", "confirmed"] },
-        $or: [
-            {
-                checkIn: { $lte: this.checkOut },
-                checkOut: { $gte: this.checkIn }
-            }
-        ]
-    });
-
-    if (overlappingBooking) {
-        next(new Error('This listing is already booked for these dates'));
+    // Skip overlap validation if:
+    // 1. Not a new booking and dates haven't changed
+    // 2. Booking is being cancelled
+    if (!this.isNew && !this.isModified('checkIn') && !this.isModified('checkOut')) {
+        return next();
     }
-    next();
+    
+    // Skip validation if booking is cancelled or completed
+    if (this.status === 'cancelled' || this.status === 'completed') {
+        return next();
+    }
+    
+    try {
+        const overlappingBooking = await this.constructor.findOne({
+            _id: { $ne: this._id }, // Exclude current booking
+            listing: this.listing,
+            status: { $in: ["pending", "confirmed"] },
+            $and: [
+                {
+                    checkIn: { $lt: this.checkOut }
+                },
+                {
+                    checkOut: { $gt: this.checkIn }
+                }
+            ]
+        });
+
+        if (overlappingBooking) {
+            return next(new Error('This listing is already booked for these dates'));
+        }
+        next();
+    } catch (err) {
+        next(err);
+    }
 });
 
 const Booking = mongoose.model("Booking", bookingSchema);

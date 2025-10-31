@@ -6,7 +6,7 @@ module.exports.renderSignupForm = (req, res) => {
 };
 
 // Handle signup
-module.exports.signup = async (req, res) => {
+module.exports.signup = async (req, res, next) => {
     try {
         const { email, username, password, firstName, lastName } = req.body;
         const user = new User({ email, username, firstName, lastName });
@@ -39,7 +39,7 @@ module.exports.login = (req, res) => {
 };
 
 // Handle logout
-module.exports.logout = (req, res) => {
+module.exports.logout = (req, res, next) => {
     req.logout((err) => {
         if (err) {
             return next(err);
@@ -50,7 +50,7 @@ module.exports.logout = (req, res) => {
 };
 
 // Show user profile
-module.exports.showProfile = async (req, res) => {
+module.exports.showProfile = async (req, res, next) => {
     try {
         const user = await User.findById(req.user._id)
             .populate("bookings")
@@ -63,7 +63,7 @@ module.exports.showProfile = async (req, res) => {
 };
 
 // Render edit profile form
-module.exports.renderEditProfile = async (req, res) => {
+module.exports.renderEditProfile = async (req, res, next) => {
     try {
         const user = await User.findById(req.user._id);
         res.render("users/edit", { user });
@@ -74,7 +74,7 @@ module.exports.renderEditProfile = async (req, res) => {
 };
 
 // Update profile
-module.exports.updateProfile = async (req, res) => {
+module.exports.updateProfile = async (req, res, next) => {
     try {
         const { firstName, lastName, email, phoneNumber } = req.body;
         await User.findByIdAndUpdate(req.user._id, {
@@ -92,7 +92,7 @@ module.exports.updateProfile = async (req, res) => {
 };
 
 // Add to wishlist
-module.exports.addToWishlist = async (req, res) => {
+module.exports.addToWishlist = async (req, res, next) => {
     try {
         const { listingId } = req.params;
         const user = await User.findById(req.user._id);
@@ -124,7 +124,7 @@ module.exports.getWishlistCount = async (req, res) => {
 };
 
 // Remove from wishlist
-module.exports.removeFromWishlist = async (req, res) => {
+module.exports.removeFromWishlist = async (req, res, next) => {
     try {
         const { listingId } = req.params;
         await User.findByIdAndUpdate(req.user._id, {
@@ -139,7 +139,7 @@ module.exports.removeFromWishlist = async (req, res) => {
 };
 
 // Show wishlist
-module.exports.showWishlist = async (req, res) => {
+module.exports.showWishlist = async (req, res, next) => {
     try {
         const user = await User.findById(req.user._id).populate("wishlist");
         res.render("users/wishlist", { 

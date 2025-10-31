@@ -4,9 +4,16 @@ const userController = require("../controllers/user");
 const passport = require("passport");
 const { isLoggedIn, isLoggedInAPI } = require("../middleware");
 
+// Wrap async functions to catch errors
+const wrapAsync = (fn) => {
+    return (req, res, next) => {
+        fn(req, res, next).catch(next);
+    };
+};
+
 // Register Routes
 router.get("/signup", userController.renderSignupForm);
-router.post("/signup", userController.signup);
+router.post("/signup", wrapAsync(userController.signup));
 
 // Login Routes
 router.get("/login", userController.renderLoginForm);
@@ -22,9 +29,9 @@ router.post("/login",
 router.get("/logout", userController.logout);
 
 // Profile Routes
-router.get("/profile", userController.showProfile);
-router.get("/profile/edit", userController.renderEditProfile);
-router.put("/profile", userController.updateProfile);
+router.get("/profile", isLoggedIn, wrapAsync(userController.showProfile));
+router.get("/profile/edit", isLoggedIn, wrapAsync(userController.renderEditProfile));
+router.put("/profile", isLoggedIn, wrapAsync(userController.updateProfile));
 
 // Test route
 router.get("/test-wishlist", (req, res) => {
@@ -36,8 +43,8 @@ router.get("/test-wishlist", (req, res) => {
 });
 
 // Wishlist Routes
-router.get("/wishlist", isLoggedIn, userController.showWishlist);
-router.post("/wishlist/:listingId", isLoggedIn, userController.addToWishlist);
-router.delete("/wishlist/:listingId", isLoggedIn, userController.removeFromWishlist);
+router.get("/wishlist", isLoggedIn, wrapAsync(userController.showWishlist));
+router.post("/wishlist/:listingId", isLoggedIn, wrapAsync(userController.addToWishlist));
+router.delete("/wishlist/:listingId", isLoggedIn, wrapAsync(userController.removeFromWishlist));
 
 module.exports = router;
