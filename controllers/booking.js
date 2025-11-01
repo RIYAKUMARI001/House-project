@@ -81,7 +81,10 @@ module.exports.userBookings = async (req, res, next) => {
                 }
             });
 
-        res.render("bookings/index", { bookings: user.bookings });
+        // Filter out cancelled bookings
+        const activeBookings = user.bookings.filter(booking => booking.status !== "cancelled");
+
+        res.render("bookings/index", { bookings: activeBookings });
     } catch (err) {
         req.flash("error", err.message);
         res.redirect("/listings");
