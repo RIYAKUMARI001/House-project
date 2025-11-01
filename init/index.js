@@ -4,8 +4,9 @@ const User = require("../models/user");
 const Booking = require("../models/booking");
 const sampleListings = require("./data");
 const sampleUsers = require("./users");
+require("dotenv").config();
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+const MONGO_URL = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/wanderlust";
 
 // Function to connect to the DB
 async function main() {
