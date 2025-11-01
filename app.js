@@ -11,13 +11,18 @@ const LocalStrategy = require("passport-local");
 const helmet = require("helmet");
 const User = require("./models/user");
 
+// Load environment variables
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config();
+}
+
 // Import routes
 const listingRoutes = require("./routes/listings");
 const userRoutes = require("./routes/users");
 const reviewRoutes = require("./routes/reviews");
 const bookingRoutes = require("./routes/booking");
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+const MONGO_URL = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/wanderlust";
 
 async function main() {
     await mongoose.connect(MONGO_URL);
@@ -33,7 +38,7 @@ main()
 
 // Session configuration
 const sessionOptions = {
-    secret: "mysupersecretcode",
+    secret: process.env.SESSION_SECRET || "mysupersecretcode",
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -105,7 +110,9 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render("error", { err });
 });
 
-app.listen(3000, () => {
-    console.log("Server is listening on port 3000");
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`Server is listening on port ${PORT}`);
 });
 
