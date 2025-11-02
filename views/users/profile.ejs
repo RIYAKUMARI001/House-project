@@ -71,6 +71,169 @@
                     <% } %>
                 </div>
             </div>
+            
+            <!-- Reviews Section -->
+            <div class="card mt-4" id="reviews">
+                <div class="card-header">
+                    <h5>My Reviews</h5>
+                </div>
+                <div class="card-body">
+                    <% if (user.reviews && user.reviews.length > 0) { %>
+                        <% user.reviews.forEach(review => { %>
+                            <div class="review-card mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h6 class="mb-1">
+                                            <% if (review.listing) { %>
+                                                <%= review.listing.title %>
+                                            <% } else { %>
+                                                Listing not available
+                                            <% } %>
+                                        </h6>
+                                        <div class="rating-stars mb-2">
+                                            <% for(let i = 1; i <= 5; i++) { %>
+                                                <% if(i <= review.rating) { %>
+                                                    <i class="fas fa-star"></i>
+                                                <% } else { %>
+                                                    <i class="far fa-star"></i>
+                                                <% } %>
+                                            <% } %>
+                                            <span class="ms-2 text-muted"><%= review.rating %>/5</span>
+                                        </div>
+                                    </div>
+                                    <small class="text-muted">
+                                        <%= new Date(review.createdAt).toLocaleDateString() %>
+                                    </small>
+                                </div>
+                                <p class="mb-0"><%= review.comment %></p>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <p class="text-muted">No reviews yet.</p>
+                    <% } %>
+                </div>
+            </div>
+            
+            <!-- Add Review Section -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5>Add a Review</h5>
+                </div>
+                <div class="card-body">
+                    <% if (user.bookings && user.bookings.length > 0) { %>
+                        <form id="addReviewForm">
+                            <div class="mb-3">
+                                <label for="bookingSelect" class="form-label">Select Booking</label>
+                                <select class="form-select" id="bookingSelect" required>
+                                    <option value="">Choose a booking</option>
+                                    <% user.bookings.forEach(booking => { %>
+                                        <% if (booking.listing) { %>
+                                            <option value="<%= booking._id %>" data-listing-id="<%= booking.listing._id %>">
+                                                <%= booking.listing.title %> - 
+                                                <%= new Date(booking.checkIn).toLocaleDateString() %> to 
+                                                <%= new Date(booking.checkOut).toLocaleDateString() %>
+                                            </option>
+                                        <% } %>
+                                    <% }) %>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Rating</label>
+                                <div class="rating-stars mb-2">
+                                    <% for(let i = 1; i <= 5; i++) { %>
+                                        <i class="far fa-star star-rating" data-rating="<%= i %>"></i>
+                                    <% } %>
+                                </div>
+                                <input type="hidden" id="ratingInput" name="review[rating]" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="comment" class="form-label">Comment</label>
+                                <textarea class="form-control" id="comment" name="review[comment]" rows="4" required minlength="5" maxlength="500"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-success">Submit Review</button>
+                        </form>
+                    <% } else { %>
+                        <p class="text-muted">You need to have bookings to leave reviews.</p>
+                        <a href="/listings" class="btn btn-primary">Browse Listings</a>
+                    <% } %>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Rating stars functionality
+    const stars = document.querySelectorAll('.star-rating');
+    const ratingInput = document.getElementById('ratingInput');
+    
+    stars.forEach(star => {
+        star.addEventListener('click', function() {
+            const rating = this.getAttribute('data-rating');
+            ratingInput.value = rating;
+            
+            // Update star display
+            stars.forEach((s, index) => {
+                if (index < rating) {
+                    s.classList.remove('far');
+                    s.classList.add('fas');
+                } else {
+                    s.classList.remove('fas');
+                    s.classList.add('far');
+                }
+            });
+        });
+    });
+    
+    // Form submission
+    const form = document.getElementById('addReviewForm');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const bookingSelect = document.getElementById('bookingSelect');
+            const selectedOption = bookingSelect.options[bookingSelect.selectedIndex];
+            const listingId = selectedOption.getAttribute('data-listing-id');
+            const rating = ratingInput.value;
+            const comment = document.getElementById('comment').value;
+            
+            if (!listingId || !rating || !comment) {
+                alert('Please fill all fields');
+                return;
+            }
+            
+            // Submit review via AJAX
+            fetch(`/listings/${listingId}/reviews`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    review: {
+                        rating: rating,
+                        comment: comment
+                    }
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Review submitted successfully!');
+                    // Reload the page to show the new review
+                    location.reload();
+                } else {
+                    alert('Error submitting review: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error submitting review');
+            });
+        });
+    }
+});
+</script>

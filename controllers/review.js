@@ -1,5 +1,6 @@
 const Review = require("../models/review");
 const Listing = require("../models/listing");
+const User = require("../models/user");
 
 // Create review
 module.exports.createReview = async (req, res) => {
@@ -14,11 +15,26 @@ module.exports.createReview = async (req, res) => {
         await newReview.save();
         await listing.save();
         
-        req.flash("success", "Review added successfully!");
-        res.redirect(`/listings/${listing._id}`);
+        // Add review to user's reviews array
+        const user = await User.findById(req.user._id);
+        user.reviews.push(newReview._id);
+        await user.save();
+        
+        // Check if request is AJAX (expects JSON response)
+        if (req.headers['content-type'] === 'application/json' || req.xhr) {
+            res.json({ success: true, message: "Review added successfully!" });
+        } else {
+            req.flash("success", "Review added successfully!");
+            res.redirect(`/listings/${listing._id}`);
+        }
     } catch (err) {
-        req.flash("error", err.message);
-        res.redirect(`/listings/${req.params.id}`);
+        // Check if request is AJAX (expects JSON response)
+        if (req.headers['content-type'] === 'application/json' || req.xhr) {
+            res.json({ success: false, message: err.message });
+        } else {
+            req.flash("error", err.message);
+            res.redirect(`/listings/${req.params.id}`);
+        }
     }
 };
 
@@ -29,6 +45,9 @@ module.exports.deleteReview = async (req, res) => {
         
         await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
         await Review.findByIdAndDelete(reviewId);
+        
+        // Also remove from user's reviews array
+        await User.findByIdAndUpdate(req.user._id, { $pull: { reviews: reviewId } });
         
         req.flash("success", "Review deleted successfully!");
         res.redirect(`/listings/${id}`);

@@ -53,8 +53,18 @@ module.exports.logout = (req, res, next) => {
 module.exports.showProfile = async (req, res, next) => {
     try {
         const user = await User.findById(req.user._id)
-            .populate("bookings")
-            .populate("reviews");
+            .populate({
+                path: "bookings",
+                populate: {
+                    path: "listing"
+                }
+            })
+            .populate({
+                path: "reviews",
+                populate: {
+                    path: "listing"
+                }
+            });
         res.render("users/profile", { user });
     } catch (err) {
         req.flash("error", "Something went wrong!");
