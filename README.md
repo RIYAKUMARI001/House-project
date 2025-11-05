@@ -1,6 +1,6 @@
-# 🏠 Wanderlust - Airbnb Clone
+# 🏠 Wanderlust - Travel Accommodation Platform
 
-A full-stack web application built with Node.js, Express, MongoDB, and EJS that allows users to list, search, and book accommodations similar to Airbnb.
+A full-stack web application built with Node.js, Express, MongoDB, and EJS that provides a comprehensive travel accommodation booking platform inspired by modern travel websites like Airbnb. Features include property listings, booking management, user authentication, and a powerful admin panel.
 ## 📸 Project Glimpse
 
 ### 🏡 Homepage & Listings
@@ -71,11 +71,20 @@ A full-stack web application built with Node.js, Express, MongoDB, and EJS that 
 - Easy wishlist management
 - Quick access to saved properties
 
+### 🔧 Admin Panel
+- **Comprehensive Dashboard** - Overview of listings, users, reviews, and bookings
+- **Listing Management** - Add, edit, delete, and toggle availability of all listings
+- **User Management** - View all users, promote/demote admin status
+- **Advanced Search & Filters** - Find specific listings or users quickly
+- **Role-based Access Control** - Secure admin-only functionality
+- **Real-time Statistics** - Monitor platform growth and activity
+
 ### 🛡️ Security Features
 - Input validation with Joi
 - XSS protection with Helmet
 - CSRF protection
 - Sanitized HTML content
+- Role-based access control for admin features
 
 ## 🚀 Getting Started
 
@@ -133,6 +142,7 @@ Use these credentials to test the application:
 ```
 house-project/
 ├── controllers/          # Route controllers
+│   ├── admin.js         # Admin panel functionality
 │   ├── booking.js
 │   ├── listing.js
 │   ├── review.js
@@ -143,11 +153,13 @@ house-project/
 │   ├── review.js
 │   └── user.js
 ├── routes/              # Express routes
+│   ├── admin.js         # Admin panel routes
 │   ├── booking.js
 │   ├── listings.js
 │   ├── reviews.js
 │   └── users.js
 ├── views/               # EJS templates
+│   ├── admin/           # Admin panel views
 │   ├── bookings/
 │   ├── listings/
 │   ├── users/
@@ -201,11 +213,10 @@ house-project/
 6. **Manage Profile:** Update your profile information and view booking history
 7. **Wishlist:** Save your favorite properties for later
 
-### For Property Owners
-1. **Add Listing:** Click "Add new listing" to create a property listing
-2. **Manage Listings:** Edit or delete your existing listings
-3. **View Bookings:** Check booking requests for your properties
-4. **Respond to Reviews:** Engage with guest reviews
+### For Administrators
+- **Comprehensive Admin Panel** with dashboard and management tools
+- **Full Platform Control** for authorized administrators only
+- **Advanced Management Features** for listings and users
 
 ## 🔧 Configuration
 
@@ -271,6 +282,11 @@ npm start    # Standard Node.js start
 ### Reviews
 - `POST /listings/:id/reviews` - Add review
 - `DELETE /listings/:id/reviews/:reviewId` - Delete review
+
+### Admin Panel (Authorized Access Only)
+- Administrative dashboard and management interface
+- Advanced listing and user management capabilities
+- Restricted access with proper authorization
 
 ## 🐛 Troubleshooting
 
