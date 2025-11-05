@@ -1,6 +1,6 @@
-# 🏠 Wanderlust - Travel Accommodation Platform
+# 🏠 Wanderlust
 
-A full-stack web application built with Node.js, Express, MongoDB, and EJS that provides a comprehensive travel accommodation booking platform inspired by modern travel websites like Airbnb. Features include property listings, booking management, user authentication, and a powerful admin panel.
+A full-stack web application built with Node.js, Express, MongoDB, and EJS that allows users to list, search, and book accommodations.
 ## 📸 Project Glimpse
 
 ### 🏡 Homepage & Listings
