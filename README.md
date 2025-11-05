@@ -334,4 +334,3 @@ Deployed on **Render**
 ---
 
 
-Would you like me to also make a **tagline + short project blurb (3–4 lines)** for this — like what you can paste on your portfolio or Devpost (same project, but summarized neatly)?
