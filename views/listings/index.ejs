@@ -153,18 +153,15 @@
 
 
 
-  <!-- Floating Action Button -->
-  <% if (currentUser) { %>
+  <!-- Quick Access Menu -->
+  <% if (currentUser && !currentUser.isAdmin) { %>
     <div class="position-fixed bottom-0 end-0 p-4" style="z-index: 1000;">
       <div class="dropdown dropup">
         <button class="btn btn-danger rounded-circle shadow-lg" type="button" data-bs-toggle="dropdown" 
                 style="width: 60px; height: 60px; font-size: 1.5rem;">
-          <i class="fas fa-plus"></i>
+          <i class="fas fa-user"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-end mb-2">
-          <li><a class="dropdown-item" href="/listings/new">
-            <i class="fas fa-home me-2"></i>Add New Listing
-          </a></li>
           <li><a class="dropdown-item" href="/wishlist">
             <i class="fas fa-heart me-2"></i>View Wishlist
           </a></li>
@@ -173,6 +170,14 @@
           </a></li>
         </ul>
       </div>
+    </div>
+  <% } else if (currentUser && currentUser.isAdmin) { %>
+    <!-- Admin Quick Access -->
+    <div class="position-fixed bottom-0 end-0 p-4" style="z-index: 1000;">
+      <a href="/admin" class="btn btn-primary rounded-circle shadow-lg" 
+         style="width: 60px; height: 60px; font-size: 1.5rem; display: flex; align-items: center; justify-content: center;">
+        <i class="fas fa-cog"></i>
+      </a>
     </div>
   <% } %>
 </body>

@@ -73,4 +73,12 @@ module.exports.isListingOwner = async (req, res, next) => {
         req.flash("error", "Something went wrong!");
         res.redirect("/listings");
     }
+};
+
+module.exports.isAdmin = (req, res, next) => {
+    if (!req.user || !req.user.isAdmin) {
+        req.flash("error", "You don't have admin privileges!");
+        return res.redirect("/");
+    }
+    next();
 }; 

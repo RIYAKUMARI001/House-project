@@ -17,11 +17,7 @@
         <a class="nav-link" href="/listings">
           <i class="fas fa-list me-1"></i>All Listings
         </a>
-        <% if (currentUser) { %>
-          <a class="nav-link" href="/listings/new">
-            <i class="fas fa-plus me-1"></i>Add Listing
-          </a>
-        <% } %>
+
       </div>
       
       <div class="navbar-nav">
@@ -51,6 +47,12 @@
               <li><a class="dropdown-item" href="/wishlist">
                 <i class="fas fa-heart me-2"></i>Wishlist
               </a></li>
+              <% if (currentUser.isAdmin) { %>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/admin">
+                  <i class="fas fa-cog me-2"></i>Admin Panel
+                </a></li>
+              <% } %>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="/logout">
                 <i class="fas fa-sign-out-alt me-2"></i>Logout

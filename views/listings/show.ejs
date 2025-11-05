@@ -190,15 +190,14 @@
     <div class="row mt-4 mb-5">
       <div class="col">
         <div class="d-flex gap-3">
-          <% if(currentUser && currentUser._id.equals(listing.owner._id)) { %>
-            <a href="/listings/<%= listing._id %>/edit" class="btn btn-outline-danger px-4">
-              <i class="fas fa-edit me-2"></i>Edit
+          <% if(currentUser && currentUser.isAdmin) { %>
+            <!-- Only admins can manage listings -->
+            <a href="/admin/listings/<%= listing._id %>/edit" class="btn btn-outline-primary px-4">
+              <i class="fas fa-cog me-2"></i>Edit via Admin Panel
             </a>
-            <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" class="d-inline">
-              <button class="btn btn-outline-dark px-4">
-                <i class="fas fa-trash-alt me-2"></i>Delete
-              </button>
-            </form>
+            <a href="/admin/listings" class="btn btn-outline-info px-4">
+              <i class="fas fa-tachometer-alt me-2"></i>Admin Panel
+            </a>
             <% } %>
         </div>
       </div>

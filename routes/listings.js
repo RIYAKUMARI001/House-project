@@ -4,25 +4,31 @@ const listingController = require("../controllers/listing");
 const { isLoggedIn, isAuthor } = require("../middleware");
 const { validateListing } = require("../validation");
 
+// Middleware to block all listing management for regular users
+const blockListingManagement = (req, res, next) => {
+    req.flash("error", "Listing management is restricted to administrators only");
+    return res.redirect("/listings");
+};
+
 // Index Route - Show all listings
 router.get("/", listingController.index);
 
-// New Route - Show form to create new listing
-router.get("/new", isLoggedIn, listingController.renderNewForm);
+// New Route - BLOCKED for all users (admin only via admin panel)
+router.get("/new", blockListingManagement);
 
-// Create Route - Create new listing
-router.post("/", isLoggedIn, validateListing, listingController.createListing);
+// Create Route - BLOCKED for all users (admin only via admin panel)
+router.post("/", blockListingManagement);
 
 // Show Route - Show specific listing
 router.get("/:id", listingController.showListing);
 
-// Edit Route - Show form to edit listing
-router.get("/:id/edit", isLoggedIn, isAuthor, listingController.renderEditForm);
+// Edit Route - BLOCKED for all users (admin only via admin panel)
+router.get("/:id/edit", blockListingManagement);
 
-// Update Route - Update listing
-router.put("/:id", isLoggedIn, isAuthor, validateListing, listingController.updateListing);
+// Update Route - BLOCKED for all users (admin only via admin panel)
+router.put("/:id", blockListingManagement);
 
-// Delete Route - Delete listing
-router.delete("/:id", isLoggedIn, isAuthor, listingController.deleteListing);
+// Delete Route - BLOCKED for all users (admin only via admin panel)
+router.delete("/:id", blockListingManagement);
 
 module.exports = router;

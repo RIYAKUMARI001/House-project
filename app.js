@@ -1,5 +1,5 @@
 const express = require("express");
-const app = express();  
+const app = express();
 const mongoose = require("mongoose");
 const path = require("path");
 const methodOverride = require("method-override");
@@ -21,6 +21,7 @@ const listingRoutes = require("./routes/listings");
 const userRoutes = require("./routes/users");
 const reviewRoutes = require("./routes/reviews");
 const bookingRoutes = require("./routes/booking");
+const adminRoutes = require("./routes/admin");
 
 const MONGO_URL = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/wanderlust";
 
@@ -84,6 +85,7 @@ app.use("/listings", listingRoutes);
 app.use("/", userRoutes);
 app.use("/listings/:id/reviews", reviewRoutes);
 app.use("/bookings", bookingRoutes);
+app.use("/admin", adminRoutes);
 
 // Home route
 app.get("/", (req, res) => {
@@ -95,18 +97,18 @@ app.use((err, req, res, next) => {
     console.error(err.stack);
     const { statusCode = 500 } = err;
     if (!err.message) err.message = "Something went wrong!";
-    
+
     // Handle specific error types
     if (err.name === 'ValidationError') {
         req.flash('error', 'Validation Error: ' + err.message);
         return res.redirect(req.get('referer') || '/listings');
     }
-    
+
     if (err.name === 'MongoError' || err.name === 'MongoServerError') {
         req.flash('error', 'Database Error: ' + err.message);
         return res.redirect(req.get('referer') || '/listings');
     }
-    
+
     res.status(statusCode).render("error", { err });
 });
 

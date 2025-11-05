@@ -1,0 +1,163 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1><i class="fas fa-plus"></i> Add New Listing</h1>
+                <a href="/admin/listings" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Listings
+                </a>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" action="/admin/listings">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="title">Title *</label>
+                                    <input type="text" class="form-control" id="title" name="listing[title]" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="category">Category *</label>
+                                    <select class="form-control" id="category" name="listing[category]" required>
+                                        <option value="">Select Category</option>
+                                        <option value="House">House</option>
+                                        <option value="Apartment">Apartment</option>
+                                        <option value="Villa">Villa</option>
+                                        <option value="Cottage">Cottage</option>
+                                        <option value="Condo">Condo</option>
+                                        <option value="Studio">Studio</option>
+                                        <option value="Cabin">Cabin</option>
+                                        <option value="Penthouse">Penthouse</option>
+                                        <option value="Bungalow">Bungalow</option>
+                                        <option value="Lodge">Lodge</option>
+                                        <option value="Island">Island</option>
+                                        <option value="Castle">Castle</option>
+                                        <option value="Treehouse">Treehouse</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Description *</label>
+                            <textarea class="form-control" id="description" name="listing[description]" rows="4" required></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="location">Location *</label>
+                                    <input type="text" class="form-control" id="location" name="listing[location]" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="country">Country *</label>
+                                    <input type="text" class="form-control" id="country" name="listing[country]" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="price">Price per night (₹) *</label>
+                                    <input type="number" class="form-control" id="price" name="listing[price]" min="0" required>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="bedrooms">Bedrooms *</label>
+                                    <input type="number" class="form-control" id="bedrooms" name="listing[bedrooms]" min="1" required>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="bathrooms">Bathrooms *</label>
+                                    <input type="number" class="form-control" id="bathrooms" name="listing[bathrooms]" min="1" required>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="maxGuests">Max Guests *</label>
+                                    <input type="number" class="form-control" id="maxGuests" name="listing[maxGuests]" min="1" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Amenities</label>
+                            <div class="row">
+                                <% const amenities = ["WiFi", "Kitchen", "Washer", "Dryer", "Air Conditioning", "Heating", "TV", "Pool", "Gym", "Parking", "Elevator", "Indoor Fireplace", "Breakfast", "Workspace", "Pets Allowed"]; %>
+                                <% amenities.forEach((amenity, index) => { %>
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" 
+                                                   id="amenity<%= index %>" name="listing[amenities]" value="<%= amenity %>">
+                                            <label class="form-check-label" for="amenity<%= index %>">
+                                                <%= amenity %>
+                                            </label>
+                                        </div>
+                                    </div>
+                                <% }) %>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="imageUrl">Image URL (Optional)</label>
+                            <input type="url" class="form-control" id="imageUrl" 
+                                   name="listing[images][0][url]" 
+                                   placeholder="https://example.com/image.jpg">
+                            <small class="form-text text-muted">
+                                Leave empty to use default beautiful image
+                            </small>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="longitude">Longitude</label>
+                                    <input type="number" class="form-control" id="longitude" 
+                                           name="listing[geometry][coordinates][0]" step="any" value="77.2090">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="latitude">Latitude</label>
+                                    <input type="number" class="form-control" id="latitude" 
+                                           name="listing[geometry][coordinates][1]" step="any" value="28.6139">
+                                </div>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="listing[geometry][type]" value="Point">
+
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="isAvailable" 
+                                       name="listing[isAvailable]" value="true" checked>
+                                <label class="form-check-label" for="isAvailable">
+                                    Available for booking
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-plus"></i> Create Listing
+                            </button>
+                            <a href="/admin/listings" class="btn btn-secondary btn-lg ml-2">
+                                <i class="fas fa-times"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
