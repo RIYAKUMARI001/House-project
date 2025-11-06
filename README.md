@@ -16,7 +16,7 @@ Inspired by modern travel platforms like Airbnb and Trip.com, Wanderlust brings 
 ### 🔍 Search & Filter
 
 <img width="1236" height="707" alt="Screenshot 2025-10-27 195211" src="https://github.com/user-attachments/assets/56e7ab6c-6fb4-421e-b798-15e8d993cf81" />  
-*Find your ideal stay using filters for category, price, and location.*
+**Find your ideal stay using filters for category, price, and location.**
 
 ### 🏠 Property Details
 
