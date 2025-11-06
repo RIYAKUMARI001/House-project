@@ -1,71 +1,172 @@
 <% layout("/layouts/boilerplate") %>
 
-<div class="container-fluid mt-4">
-    <div class="row">
-        <div class="col-md-12">
-            <h1 class="mb-4">
-                <i class="fas fa-tachometer-alt"></i> Admin Dashboard
+<style>
+.admin-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2rem 0;
+    margin: -1rem -15px 2rem -15px;
+    border-radius: 0 0 20px 20px;
+}
+
+.stat-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin-bottom: 0;
+}
+
+.stat-icon {
+    font-size: 3rem;
+    opacity: 0.3;
+}
+
+.action-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.action-card:hover {
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.action-btn {
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.recent-item {
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    background: #f8f9fa;
+    border-left: 4px solid #007bff;
+    transition: all 0.3s ease;
+}
+
+.recent-item:hover {
+    background: #e9ecef;
+    transform: translateX(5px);
+}
+
+.welcome-text {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+</style>
+
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="admin-header text-center">
+        <div class="container">
+            <h1 class="mb-3">
+                <i class="fas fa-tachometer-alt me-3"></i>Admin Dashboard
             </h1>
+            <p class="welcome-text mb-0">
+                Welcome back! Here's your platform overview.
+            </p>
         </div>
     </div>
 
     <!-- Stats Cards -->
-    <div class="row mb-4">
-        <div class="col-md-3">
-            <div class="card bg-primary text-white">
+    <div class="row mb-5">
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card stat-card text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h4><%= typeof totalListings !== 'undefined' ? totalListings : 0 %></h4>
-                            <p class="mb-0">Total Listings</p>
+                            <div class="stat-number"><%= typeof totalListings !== 'undefined' ? totalListings : 0 %></div>
+                            <div class="stat-label">Total Listings</div>
                         </div>
-                        <div class="align-self-center">
-                            <i class="fas fa-home fa-2x"></i>
+                        <div>
+                            <i class="fas fa-home stat-icon"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card bg-success text-white">
+        
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card stat-card text-white" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h4><%= typeof totalUsers !== 'undefined' ? totalUsers : 0 %></h4>
-                            <p class="mb-0">Total Users</p>
+                            <div class="stat-number"><%= typeof totalUsers !== 'undefined' ? totalUsers : 0 %></div>
+                            <div class="stat-label">Total Users</div>
                         </div>
-                        <div class="align-self-center">
-                            <i class="fas fa-users fa-2x"></i>
+                        <div>
+                            <i class="fas fa-users stat-icon"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card bg-info text-white">
+        
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card stat-card text-white" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h4><%= typeof totalReviews !== 'undefined' ? totalReviews : 0 %></h4>
-                            <p class="mb-0">Total Reviews</p>
+                            <div class="stat-number"><%= typeof totalReviews !== 'undefined' ? totalReviews : 0 %></div>
+                            <div class="stat-label">Total Reviews</div>
                         </div>
-                        <div class="align-self-center">
-                            <i class="fas fa-star fa-2x"></i>
+                        <div>
+                            <i class="fas fa-star stat-icon"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card bg-warning text-white">
+        
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card stat-card text-white" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h4><%= typeof totalBookings !== 'undefined' ? totalBookings : 0 %></h4>
-                            <p class="mb-0">Total Bookings</p>
+                            <div class="stat-number"><%= typeof totalBookings !== 'undefined' ? totalBookings : 0 %></div>
+                            <div class="stat-label">Total Bookings</div>
                         </div>
-                        <div class="align-self-center">
-                            <i class="fas fa-calendar-check fa-2x"></i>
+                        <div>
+                            <i class="fas fa-calendar-check stat-icon"></i>
                         </div>
                     </div>
                 </div>
@@ -74,32 +175,32 @@
     </div>
 
     <!-- Quick Actions -->
-    <div class="row mb-4">
+    <div class="row mb-5">
         <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Quick Actions</h5>
-                </div>
+            <div class="card action-card">
                 <div class="card-body">
+                    <h5 class="card-title mb-4">
+                        <i class="fas fa-bolt text-warning me-2"></i>Quick Actions
+                    </h5>
                     <div class="row">
-                        <div class="col-md-3 mb-2">
-                            <a href="/admin/listings" class="btn btn-outline-primary btn-block">
-                                <i class="fas fa-list"></i> Manage Listings
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <a href="/admin/listings" class="btn action-btn btn-primary w-100">
+                                <i class="fas fa-list me-2"></i>Manage Listings
                             </a>
                         </div>
-                        <div class="col-md-3 mb-2">
-                            <a href="/admin/listings/new" class="btn btn-outline-success btn-block">
-                                <i class="fas fa-plus"></i> Add New Listing
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <a href="/admin/listings/new" class="btn action-btn btn-success w-100">
+                                <i class="fas fa-plus me-2"></i>Add New Listing
                             </a>
                         </div>
-                        <div class="col-md-3 mb-2">
-                            <a href="/admin/users" class="btn btn-outline-info btn-block">
-                                <i class="fas fa-users"></i> Manage Users
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <a href="/admin/users" class="btn action-btn btn-info w-100">
+                                <i class="fas fa-users me-2"></i>Manage Users
                             </a>
                         </div>
-                        <div class="col-md-3 mb-2">
-                            <a href="/listings" class="btn btn-outline-secondary btn-block">
-                                <i class="fas fa-eye"></i> View Site
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <a href="/listings" class="btn action-btn btn-outline-secondary w-100">
+                                <i class="fas fa-eye me-2"></i>View Site
                             </a>
                         </div>
                     </div>
@@ -110,61 +211,90 @@
 
     <!-- Recent Activity -->
     <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Recent Listings</h5>
-                </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card action-card h-100">
                 <div class="card-body">
+                    <h5 class="card-title mb-4">
+                        <i class="fas fa-home text-primary me-2"></i>Recent Listings
+                    </h5>
                     <% if (typeof recentListings !== 'undefined' && recentListings.length > 0) { %>
                         <% recentListings.forEach(listing => { %>
-                            <div class="d-flex justify-content-between align-items-center border-bottom py-2">
-                                <div>
-                                    <h6 class="mb-1"><%= listing.title %></h6>
-                                    <small class="text-muted">by <%= listing.owner ? listing.owner.username : 'Unknown' %></small>
-                                </div>
-                                <div class="text-right">
-                                    <span class="badge badge-<%= listing.isAvailable ? 'success' : 'danger' %>">
-                                        <%= listing.isAvailable ? 'Available' : 'Unavailable' %>
-                                    </span>
-                                    <br>
-                                    <small class="text-muted">₹<%= listing.price %>/night</small>
+                            <div class="recent-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1 text-dark"><%= listing.title %></h6>
+                                        <small class="text-muted">
+                                            <i class="fas fa-user me-1"></i>
+                                            <%= listing.owner ? listing.owner.username : 'Unknown' %>
+                                        </small>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="badge bg-<%= listing.isAvailable ? 'success' : 'danger' %> mb-1">
+                                            <%= listing.isAvailable ? 'Available' : 'Unavailable' %>
+                                        </span>
+                                        <br>
+                                        <small class="text-primary fw-bold">₹<%= listing.price %>/night</small>
+                                    </div>
                                 </div>
                             </div>
                         <% }) %>
+                        <div class="text-center mt-3">
+                            <a href="/admin/listings" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-arrow-right me-1"></i>View All Listings
+                            </a>
+                        </div>
                     <% } else { %>
-                        <p class="text-muted">No listings found.</p>
+                        <div class="text-center py-4">
+                            <i class="fas fa-home fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No listings found</p>
+                            <a href="/admin/listings/new" class="btn btn-primary btn-sm">
+                                <i class="fas fa-plus me-1"></i>Add First Listing
+                            </a>
+                        </div>
                     <% } %>
                 </div>
             </div>
         </div>
         
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Recent Users</h5>
-                </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card action-card h-100">
                 <div class="card-body">
+                    <h5 class="card-title mb-4">
+                        <i class="fas fa-users text-success me-2"></i>Recent Users
+                    </h5>
                     <% if (typeof recentUsers !== 'undefined' && recentUsers.length > 0) { %>
                         <% recentUsers.forEach(user => { %>
-                            <div class="d-flex justify-content-between align-items-center border-bottom py-2">
-                                <div>
-                                    <h6 class="mb-1"><%= user.username %></h6>
-                                    <small class="text-muted"><%= user.email %></small>
-                                </div>
-                                <div class="text-right">
-                                    <span class="badge badge-<%= user.isAdmin ? 'primary' : 'secondary' %>">
-                                        <%= user.isAdmin ? 'Admin' : 'User' %>
-                                    </span>
-                                    <br>
-                                    <small class="text-muted">
-                                        <%= user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A' %>
-                                    </small>
+                            <div class="recent-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1 text-dark"><%= user.username %></h6>
+                                        <small class="text-muted">
+                                            <i class="fas fa-envelope me-1"></i>
+                                            <%= user.email %>
+                                        </small>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="badge bg-<%= user.isAdmin ? 'primary' : 'secondary' %> mb-1">
+                                            <%= user.isAdmin ? 'Admin' : 'User' %>
+                                        </span>
+                                        <br>
+                                        <small class="text-muted">
+                                            <%= user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A' %>
+                                        </small>
+                                    </div>
                                 </div>
                             </div>
                         <% }) %>
+                        <div class="text-center mt-3">
+                            <a href="/admin/users" class="btn btn-outline-success btn-sm">
+                                <i class="fas fa-arrow-right me-1"></i>View All Users
+                            </a>
+                        </div>
                     <% } else { %>
-                        <p class="text-muted">No users found.</p>
+                        <div class="text-center py-4">
+                            <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No users found</p>
+                        </div>
                     <% } %>
                 </div>
             </div>
