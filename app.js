@@ -92,6 +92,11 @@ app.get("/", (req, res) => {
     res.redirect("/listings");
 });
 
+// About route
+app.get("/about", (req, res) => {
+    res.render("about");
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);

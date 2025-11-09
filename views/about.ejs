@@ -1,0 +1,298 @@
+<% layout("/layouts/boilerplate") %>
+
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .feature-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .stats-section {
+            background: #f8f9fa;
+            padding: 3rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .mission-section {
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+    </style>
+
+    <div class="hero-section">
+        <div class="container">
+            <h1 class="display-4 mb-4">About Wanderlust</h1>
+            <p class="lead mb-4">
+                Your gateway to extraordinary travel experiences around the world
+            </p>
+            <p class="fs-5">
+                Connecting travelers with unique accommodations and creating unforgettable memories
+            </p>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <!-- What We Do Section -->
+        <div class="row mb-5">
+            <div class="col-md-12 text-center mb-5">
+                <h2 class="display-5 mb-3">What We Do</h2>
+                <p class="lead text-muted">
+                    Wanderlust is a modern travel accommodation platform that brings together travelers and hosts from
+                    around the globe
+                </p>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="row mb-5">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card feature-card">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon"
+                            style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h5 class="card-title">Discover Amazing Places</h5>
+                        <p class="card-text text-muted">
+                            Browse through carefully curated accommodations from cozy cottages to luxury villas across
+                            the world.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card feature-card">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon"
+                            style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <h5 class="card-title">Secure Booking</h5>
+                        <p class="card-text text-muted">
+                            Book with confidence using our integrated booking management system with secure payment
+                            processing.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card feature-card">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon"
+                            style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h5 class="card-title">Personal Experience</h5>
+                        <p class="card-text text-muted">
+                            Create wishlists, leave reviews, and connect with a community of travelers sharing authentic
+                            experiences.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card feature-card">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon"
+                            style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                            <i class="fas fa-filter"></i>
+                        </div>
+                        <h5 class="card-title">Smart Filters</h5>
+                        <p class="card-text text-muted">
+                            Find exactly what you're looking for with advanced filtering by location, price, amenities,
+                            and capacity.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card feature-card">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon"
+                            style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <h5 class="card-title">Host Your Space</h5>
+                        <p class="card-text text-muted">
+                            Share your unique space with travelers and earn income while providing memorable
+                            experiences.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card feature-card">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon"
+                            style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h5 class="card-title">Safe & Secure</h5>
+                        <p class="card-text text-muted">
+                            Travel with peace of mind knowing our platform prioritizes safety, security, and user
+                            verification.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="stats-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-number">29+</div>
+                        <h5>Properties</h5>
+                        <p class="text-muted">Unique accommodations</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-number">100+</div>
+                        <h5>Happy Travelers</h5>
+                        <p class="text-muted">Satisfied customers</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-number">15+</div>
+                        <h5>Countries</h5>
+                        <p class="text-muted">Global destinations</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-number">24/7</div>
+                        <h5>Support</h5>
+                        <p class="text-muted">Customer service</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mission Section -->
+    <div class="mission-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="display-5 mb-4">Our Mission</h2>
+                    <p class="lead mb-4">
+                        To make travel accessible and enjoyable for everyone by connecting people with unique
+                        accommodations
+                        and creating memorable experiences around the world.
+                    </p>
+                    <p class="fs-5">
+                        We believe that travel has the power to bring people together, create lasting memories,
+                        and broaden perspectives. Through Wanderlust, we're building a community where every journey
+                        becomes an adventure and every stay becomes a story worth sharing.
+                    </p>
+                    <div class="mt-4">
+                        <a href="/listings" class="btn btn-light btn-lg me-3">
+                            <i class="fas fa-search me-2"></i>Start Exploring
+                        </a>
+                        <a href="/signup" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-user-plus me-2"></i>Join Community
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Technology Section -->
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-12 text-center mb-5">
+                <h2 class="display-5 mb-3">Built with Modern Technology</h2>
+                <p class="lead text-muted">
+                    Powered by cutting-edge web technologies for the best user experience
+                </p>
+            </div>
+        </div>
+
+        <div class="row text-center">
+            <div class="col-md-2 col-6 mb-4">
+                <div class="p-3">
+                    <i class="fab fa-node-js fa-3x text-success mb-2"></i>
+                    <h6>Node.js</h6>
+                </div>
+            </div>
+            <div class="col-md-2 col-6 mb-4">
+                <div class="p-3">
+                    <i class="fas fa-database fa-3x text-primary mb-2"></i>
+                    <h6>MongoDB</h6>
+                </div>
+            </div>
+            <div class="col-md-2 col-6 mb-4">
+                <div class="p-3">
+                    <i class="fab fa-bootstrap fa-3x text-purple mb-2"></i>
+                    <h6>Bootstrap</h6>
+                </div>
+            </div>
+            <div class="col-md-2 col-6 mb-4">
+                <div class="p-3">
+                    <i class="fab fa-js-square fa-3x text-warning mb-2"></i>
+                    <h6>JavaScript</h6>
+                </div>
+            </div>
+            <div class="col-md-2 col-6 mb-4">
+                <div class="p-3">
+                    <i class="fas fa-shield-alt fa-3x text-danger mb-2"></i>
+                    <h6>Security</h6>
+                </div>
+            </div>
+            <div class="col-md-2 col-6 mb-4">
+                <div class="p-3">
+                    <i class="fas fa-mobile-alt fa-3x text-info mb-2"></i>
+                    <h6>Responsive</h6>
+                </div>
+            </div>
+        </div>
+    </div>
