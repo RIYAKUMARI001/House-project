@@ -25,6 +25,10 @@ router.put("/listings/:id", isLoggedIn, isAdmin, adminController.updateListing);
 router.delete("/listings/:id", isLoggedIn, isAdmin, adminController.deleteListing);
 router.patch("/listings/:id/toggle", isLoggedIn, isAdmin, adminController.toggleAvailability);
 
+// Reviews Management
+router.get("/reviews", isLoggedIn, isAdmin, adminController.reviewsIndex);
+router.delete("/reviews/:id", isLoggedIn, isAdmin, adminController.deleteReview);
+
 // Users Management
 router.get("/users", isLoggedIn, isAdmin, adminController.usersIndex);
 router.patch("/users/:id/toggle-admin", isLoggedIn, isAdmin, adminController.toggleAdminStatus);

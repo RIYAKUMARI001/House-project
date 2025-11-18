@@ -242,6 +242,40 @@ module.exports.toggleAvailability = async (req, res) => {
     }
 };
 
+// Show all reviews for admin
+module.exports.reviewsIndex = async (req, res) => {
+    try {
+        const { search } = req.query;
+        let filter = {};
+        
+        const reviews = await Review.find(filter)
+            .populate("author")
+            .populate("listing")
+            .sort({ createdAt: -1 });
+        
+        res.render("admin/reviews", { 
+            reviews,
+            currentFilters: req.query || {}
+        });
+    } catch (err) {
+        req.flash("error", "Something went wrong!");
+        res.redirect("/admin");
+    }
+};
+
+// Delete review (admin)
+module.exports.deleteReview = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await Review.findByIdAndDelete(id);
+        req.flash("success", "Review deleted successfully!");
+        res.redirect("/admin/reviews");
+    } catch (err) {
+        req.flash("error", "Something went wrong!");
+        res.redirect("/admin/reviews");
+    }
+};
+
 // Show all users for admin
 module.exports.usersIndex = async (req, res) => {
     try {
