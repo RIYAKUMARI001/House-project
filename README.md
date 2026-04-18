@@ -88,6 +88,9 @@ Inspired by modern travel platforms like Airbnb and Trip.com, Wanderlust brings 
 * **Real-time Stats** for platform activity monitoring
 * **Role-Based Access Control** for admin-only operations
 
+<img width="1739" height="791" alt="image" src="https://github.com/user-attachments/assets/f754b571-5560-4da3-85ab-ec996eb5461a" />
+
+
 ### 🛡️ Security Features
 
 * Input validation via **Joi**
